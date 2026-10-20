@@ -42,6 +42,7 @@ $navItems = [
             <p class="top-strip__note">Secure online banking</p>
             <ul class="top-strip__links">
                 <li><a href="#">Help</a></li>
+                <li><a href="<?= BASE_URL ?>login.php">Log in</a></li>
                 <li><a href="#">Log out</a></li>
             </ul>
         </div>
@@ -93,7 +94,7 @@ $navItems = [
                     <span class="header-bell__dot" aria-hidden="true"></span>
                 </button>
 
-                <a class="header-avatar" href="<?= BASE_URL ?>about.php" aria-label="Account: Emmanuel">E</a>
+                <a class="header-avatar" href="<?= BASE_URL ?>login.php" aria-label="Log in to your account">E</a>
             </div>
         </div>
     </div>

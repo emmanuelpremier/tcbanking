@@ -1113,6 +1113,366 @@ input {
     font-weight: 600;
 }
 
+/* ---------- Login page (two-panel: forest aside + paper form) ---------- */
+.login {
+    padding: var(--s5) 0 var(--s6);
+}
+
+.login__inner {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+    /* This box doubles as .container (24px inline gutter); cancel the
+       padding so both panels sit flush against the border on every side. */
+    padding-inline: 0;
+}
+
+.login__panel {
+    padding: var(--s5) var(--s4);
+}
+
+.login__panel--brand {
+    color: var(--paper);
+    background: var(--forest);
+}
+
+.login__panel--form {
+    background: var(--paper);
+}
+
+/* Small spaced-capital label; brass-soft on forest, brass on paper. */
+.login__label {
+    margin: 0 0 var(--s2);
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--brass-soft);
+}
+
+.login__label--brass {
+    color: var(--brass);
+}
+
+.login__title {
+    margin: 0 0 var(--s2);
+    font-family: var(--font-heading);
+    font-size: 2.1rem;
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--paper);
+}
+
+.login__lede {
+    margin: 0 0 var(--s4);
+    max-width: 36ch;
+    font-size: 0.95rem;
+    color: rgba(247, 244, 236, 0.72);
+}
+
+/* Trust points: hairline rules, thin-line icons. */
+.login__trust {
+    display: grid;
+    gap: var(--s2);
+}
+
+.login__trust li {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    padding-top: var(--s2);
+    font-size: 0.9rem;
+    color: rgba(247, 244, 236, 0.85);
+    border-top: 1px solid rgba(247, 244, 236, 0.15);
+}
+
+.login__trust li:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.login__trust-icon {
+    flex: none;
+    color: var(--brass-soft);
+}
+
+.login__subtitle {
+    margin: 0 0 var(--s3);
+    font-size: 1.5rem;
+}
+
+/* Demo notice banner (no backend wired up yet). */
+.login__notice {
+    margin: 0 0 var(--s3);
+    padding: 12px var(--s2);
+    font-size: 0.85rem;
+    color: var(--forest);
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-left: 2px solid var(--brass);
+    border-radius: var(--radius-sm);
+}
+
+/* Bottom-border-only inputs, brass focus line. */
+.input-line {
+    display: flex;
+    align-items: center;
+    gap: var(--s1);
+    border-bottom: 1px solid var(--rule);
+    transition: border-color var(--transition);
+}
+
+.input-line:focus-within {
+    border-bottom-color: var(--brass);
+}
+
+.input-line .input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+}
+
+.input-line.is-invalid {
+    border-bottom-color: var(--negative);
+}
+
+/* Visible error text under the field. */
+.field__error {
+    margin: var(--s1) 0 0;
+    font-size: 0.78rem;
+    color: var(--negative);
+}
+
+/* Show/hide password toggle: thin-line eye icon. */
+.password-toggle {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    color: var(--ink-soft);
+    transition: color var(--transition);
+}
+
+.password-toggle:hover {
+    color: var(--brass);
+}
+
+/* Slashed-eye icon only while the password is visible. */
+.password-toggle__icon--off {
+    display: none;
+}
+
+.password-toggle.is-visible .password-toggle__icon {
+    display: none;
+}
+
+.password-toggle.is-visible .password-toggle__icon--off {
+    display: block;
+}
+
+/* Remember me + forgot password row. */
+.login-form__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s2);
+    margin-bottom: var(--s3);
+}
+
+.checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s1);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+}
+
+.checkbox input {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    accent-color: var(--forest);
+}
+
+.login-form__link {
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--brass);
+    padding-bottom: 1px;
+}
+
+.login-form__link:hover {
+    color: var(--ink);
+}
+
+/* Hairline divider before the register prompt. */
+.login-form__divider {
+    border-top: 1px solid var(--rule);
+    margin: var(--s3) 0 var(--s2);
+}
+
+.login-form__foot {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    text-align: center;
+}
+
+.login-form__foot a {
+    font-weight: 500;
+    color: var(--forest);
+    border-bottom: 1px solid var(--brass);
+    padding-bottom: 1px;
+}
+
+.login-form__foot a:hover {
+    color: var(--ink);
+}
+
+/* ---------- Register page (reuses the .login two-panel shell) ---------- */
+
+/* Numbered 3-step list: brass numerals, hairline separators. */
+.register-steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+}
+
+.register-steps li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s2);
+    padding: var(--s2) 0;
+    font-size: 0.95rem;
+    color: rgba(247, 244, 236, 0.85);
+    border-top: 1px solid rgba(247, 244, 236, 0.15);
+}
+
+.register-steps li:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.register-steps li:last-child {
+    padding-bottom: 0;
+}
+
+.register-steps__num {
+    flex: none;
+    min-width: 1.4em;
+    font-size: var(--size-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    font-variant-numeric: tabular-nums;
+    color: var(--brass-soft);
+}
+
+/* First name + last name share a row (stacked on small screens). */
+.register-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s2);
+}
+
+/* Selects keep the bottom-border-only treatment with a hairline chevron. */
+.input-line select.input {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 22px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2355625A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+/* Password strength: thin rule + weak/fair/strong label. */
+.strength {
+    margin-top: var(--s1);
+}
+
+.strength__track {
+    height: 3px;
+    background: var(--rule);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.strength__fill {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--rule);
+    transition: width var(--transition), background-color var(--transition);
+}
+
+.strength__label {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s1);
+    margin: 6px 0 0;
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.strength__level {
+    font-weight: 600;
+}
+
+.strength.is-weak .strength__fill {
+    background: var(--negative);
+}
+
+.strength.is-weak .strength__level {
+    color: var(--negative);
+}
+
+.strength.is-fair .strength__fill {
+    background: var(--brass);
+}
+
+.strength.is-fair .strength__level {
+    color: var(--brass);
+}
+
+.strength.is-strong .strength__fill {
+    background: var(--positive);
+}
+
+.strength.is-strong .strength__level {
+    color: var(--positive);
+}
+
+/* Terms links keep the brass hairline treatment; invalid checkbox goes red. */
+.register-form__terms a {
+    font-weight: 500;
+    color: var(--forest);
+    border-bottom: 1px solid var(--brass);
+    padding-bottom: 1px;
+}
+
+.register-form__terms a:hover {
+    color: var(--ink);
+}
+
+.checkbox.is-invalid {
+    color: var(--negative);
+}
+
 /* ---------- Footer ---------- */
 .site-footer {
     color: rgba(247, 244, 236, 0.8);
@@ -1227,6 +1587,31 @@ input {
 }
 
 @media (max-width: 900px) {
+    /* Login panels stack: forest panel first (shorter), full-width form. */
+    .login {
+        padding: var(--s4) 0 var(--s5);
+    }
+
+    .login__inner {
+        grid-template-columns: 1fr;
+    }
+
+    .login__panel {
+        padding: var(--s4) var(--s3);
+    }
+
+    .login__panel--brand {
+        padding-block: var(--s3);
+    }
+
+    .login__title {
+        font-size: 1.7rem;
+    }
+
+    .login__lede {
+        margin-bottom: var(--s3);
+    }
+
     /* Masthead collapses into a full-width dropdown. */
     .masthead__inner {
         display: flex;
@@ -1290,6 +1675,11 @@ input {
     .gift-redeem {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    /* Register: first/last name stack on small screens. */
+    .register-form__row {
+        grid-template-columns: 1fr;
     }
 
     .footer-bottom__inner {
