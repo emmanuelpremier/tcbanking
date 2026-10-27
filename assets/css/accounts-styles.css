@@ -1,0 +1,529 @@
+/* ==========================================================================
+   ACCOUNTS PAGE  (append this whole block to the END of assets/css/style.css)
+   Uses the existing design tokens, with fallbacks so it never breaks.
+   ========================================================================== */
+
+:root {
+    --acc-paper:   var(--paper,   #F7F4EC);
+    --acc-paper-2: var(--paper-2, #EFEADD);
+    --acc-ink:     var(--ink,     #14201A);
+    --acc-soft:    var(--ink-soft, #55625A);
+    --acc-forest:  var(--forest,  #0F3D2E);
+    --acc-brass:   var(--brass,   #A88B4A);
+    --acc-rule:    var(--rule,    #D9D2C0);
+    --acc-pos:     var(--positive, #2F6B4F);
+    --acc-neg:     var(--negative, #8C3B32);
+}
+
+/* Hidden panels and messages must really disappear */
+.is-hidden,
+[hidden] {
+    display: none !important;
+}
+
+/* ---------- Page header ---------- */
+.accounts-header {
+    padding: 64px 0 40px;
+    background: var(--acc-paper);
+}
+
+.accounts-header__label {
+    margin: 0 0 12px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--acc-brass);
+}
+
+.accounts-header__title {
+    margin: 0 0 12px;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--acc-ink);
+}
+
+.accounts-header__lede {
+    margin: 0;
+    max-width: 640px;
+    color: var(--acc-soft);
+}
+
+.accounts-header__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+/* Buttons used on this page */
+.accounts-header .btn,
+.accounts-detail__actions .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: 1px solid var(--acc-forest);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--acc-forest);
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.accounts-header .btn:hover,
+.accounts-detail__actions .btn:hover {
+    background: var(--acc-forest);
+    color: var(--acc-paper);
+}
+
+.accounts-header .btn:focus-visible,
+.accounts-detail__actions .btn:focus-visible,
+.account-row:focus-visible {
+    outline: 2px solid var(--acc-brass);
+    outline-offset: 2px;
+}
+
+.accounts-detail__actions .btn {
+    border-color: var(--acc-rule);
+    color: var(--acc-ink);
+    padding: 10px 16px;
+    font-size: 0.74rem;
+}
+
+.accounts-detail__actions .btn:hover {
+    border-color: var(--acc-forest);
+}
+
+.btn__icon {
+    display: inline-flex;
+}
+
+/* ---------- Summary strip ---------- */
+.accounts-summary {
+    background: var(--acc-paper-2);
+    border-top: 1px solid var(--acc-rule);
+    border-bottom: 1px solid var(--acc-rule);
+}
+
+.accounts-summary__inner {
+    display: flex;
+    align-items: stretch;
+}
+
+.accounts-summary__figure {
+    flex: 1;
+    padding: 28px 32px;
+}
+
+.accounts-summary__figure:first-child {
+    padding-left: 0;
+}
+
+.accounts-summary__figure:last-child {
+    padding-right: 0;
+}
+
+.accounts-summary__hairline {
+    width: 1px;
+    background: var(--acc-rule);
+}
+
+.accounts-summary__label {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--acc-soft);
+}
+
+.accounts-summary__number {
+    margin: 8px 0 0;
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--acc-ink);
+}
+
+.accounts-summary__currency {
+    margin-right: 2px;
+    font-weight: 400;
+}
+
+/* ---------- Two-column body ---------- */
+.accounts-body {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: 64px;
+    padding-block: 64px 96px;
+    align-items: start;
+}
+
+/* Left: account picker */
+.accounts-picker__head {
+    margin-bottom: 20px;
+}
+
+.accounts-picker__title {
+    margin: 0 0 4px;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--acc-ink);
+}
+
+.accounts-picker__note {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--acc-soft);
+}
+
+.accounts-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--acc-rule);
+}
+
+.account-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding: 18px 16px;
+    border: 0;
+    border-bottom: 1px solid var(--acc-rule);
+    border-left: 2px solid transparent;
+    background: transparent;
+    color: var(--acc-ink);
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.account-row:hover {
+    background: var(--acc-paper-2);
+}
+
+.account-row.is-active {
+    background: var(--acc-paper-2);
+    border-left-color: var(--acc-brass);
+}
+
+.account-row__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.account-row__name {
+    font-weight: 500;
+}
+
+.account-row__meta {
+    font-size: 0.8rem;
+    color: var(--acc-soft);
+}
+
+.account-row__balance {
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Right: detail panel */
+.accounts-detail__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--acc-rule);
+}
+
+.accounts-detail__name {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--acc-ink);
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid var(--acc-rule);
+    border-radius: 2px;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.badge--positive {
+    color: var(--acc-pos);
+    border-color: var(--acc-pos);
+}
+
+.accounts-detail__facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+    margin: 0;
+}
+
+.accounts-detail__fact {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--acc-rule);
+}
+
+.accounts-detail__fact-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--acc-soft);
+}
+
+.accounts-detail__fact-value {
+    margin: 0;
+    font-weight: 500;
+    text-align: right;
+}
+
+.accounts-detail__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 32px 0 48px;
+}
+
+/* Transactions */
+.accounts-detail__subtitle {
+    margin: 0 0 16px;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--acc-ink);
+}
+
+.accounts-detail__tabs {
+    display: flex;
+    gap: 28px;
+    border-bottom: 1px solid var(--acc-rule);
+}
+
+.accounts-detail__tab {
+    margin-bottom: -1px;
+    padding: 10px 0;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--acc-soft);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.accounts-detail__tab:hover {
+    color: var(--acc-ink);
+}
+
+.accounts-detail__tab.is-active {
+    color: var(--acc-ink);
+    font-weight: 500;
+    border-bottom-color: var(--acc-brass);
+}
+
+.accounts-detail__search {
+    position: relative;
+    margin: 20px 0 8px;
+}
+
+.accounts-detail__search-icon {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--acc-soft);
+}
+
+.accounts-detail__search-input {
+    width: 100%;
+    padding: 10px 0 10px 28px;
+    border: 0;
+    border-bottom: 1px solid var(--acc-soft);
+    border-radius: 0;
+    background: transparent;
+    color: var(--acc-ink);
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.accounts-detail__search-input:focus {
+    border-bottom-color: var(--acc-brass);
+}
+
+.accounts-detail__table-wrap {
+    overflow-x: auto;
+}
+
+.ledger {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ledger th {
+    padding: 14px 8px;
+    border-bottom: 1px solid var(--acc-ink);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-align: left;
+    text-transform: uppercase;
+    color: var(--acc-soft);
+}
+
+.ledger th:last-child {
+    text-align: right;
+}
+
+.ledger__cell {
+    padding: 16px 8px;
+    border-bottom: 1px solid var(--acc-rule);
+    vertical-align: top;
+}
+
+.ledger__cell--date {
+    font-size: 0.85rem;
+    color: var(--acc-soft);
+    white-space: nowrap;
+}
+
+.ledger__name {
+    margin: 0;
+    font-weight: 500;
+}
+
+.ledger__sub {
+    margin: 2px 0 0;
+    font-size: 0.82rem;
+    color: var(--acc-soft);
+}
+
+.ledger__cell--amount {
+    text-align: right;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.ledger__cell--amount.is-in {
+    color: var(--acc-pos);
+}
+
+.ledger__cell--amount.is-out {
+    color: var(--acc-ink);
+}
+
+.accounts-detail__empty {
+    margin: 0;
+    padding: 32px 0;
+    text-align: center;
+    color: var(--acc-soft);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+    .accounts-body {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 40px;
+        padding-block: 40px 64px;
+    }
+
+    .accounts-list {
+        flex-direction: row;
+        gap: 12px;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        border-top: 0;
+    }
+
+    .account-row {
+        flex: 0 0 240px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        border: 1px solid var(--acc-rule);
+        border-left: 2px solid transparent;
+    }
+
+    .account-row.is-active {
+        border-left-color: var(--acc-brass);
+    }
+}
+
+@media (max-width: 700px) {
+    .accounts-summary__inner {
+        flex-direction: column;
+    }
+
+    .accounts-summary__figure,
+    .accounts-summary__figure:first-child,
+    .accounts-summary__figure:last-child {
+        padding: 20px 0;
+    }
+
+    .accounts-summary__hairline {
+        width: 100%;
+        height: 1px;
+    }
+
+    .accounts-detail__facts {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .ledger thead {
+        display: none;
+    }
+
+    .ledger,
+    .ledger tbody {
+        display: block;
+    }
+
+    .ledger__row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "desc amount"
+            "date date";
+        gap: 4px 16px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--acc-rule);
+    }
+
+    .ledger__cell {
+        display: block;
+        padding: 0;
+        border: 0;
+    }
+
+    .ledger__cell--desc   { grid-area: desc; }
+    .ledger__cell--amount { grid-area: amount; }
+    .ledger__cell--date   { grid-area: date; }
+}

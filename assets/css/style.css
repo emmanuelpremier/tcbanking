@@ -1760,7 +1760,8 @@ input {
         grid-template-columns: 1fr;
     }
 }
-
+.is-hidden,
+[hidden] { display: none !important; }
 
 
 
