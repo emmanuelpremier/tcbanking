@@ -1,0 +1,727 @@
+/* ==========================================================================
+   TRANSFERS PAGE - T&C Banking
+   Classic private-bank design system.
+   Ivory / forest / brass, Poppins, hairline rules, 2-4px corners.
+   ========================================================================== */
+
+:root {
+    --tr-paper:   var(--paper,   #F7F4EC);
+    --tr-paper-2: var(--paper-2, #EFEADD);
+    --tr-ink:     var(--ink,     #14201A);
+    --tr-soft:    var(--ink-soft, #55625A);
+    --tr-forest:  var(--forest,  #0F3D2E);
+    --tr-brass:   var(--brass,   #A88B4A);
+    --tr-brass-soft: var(--brass-soft, #D8C79A);
+    --tr-rule:    var(--rule,    #D9D2C0);
+    --tr-pos:     var(--positive, #2F6B4F);
+    --tr-neg:     var(--negative, #8C3B32);
+    --tr-radius:  var(--radius, 3px);
+    --tr-radius-sm: var(--radius-sm, 2px);
+}
+
+/* ---------- Page header ---------- */
+
+.transfers-header {
+    padding: 56px 0 24px;
+    background: var(--tr-paper);
+}
+
+.transfers-label {
+    margin: 0 0 12px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tr-brass);
+}
+
+.transfers-title {
+    margin: 0 0 12px;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--tr-ink);
+}
+
+.transfers-lede {
+    margin: 0;
+    max-width: 640px;
+    color: var(--tr-soft);
+}
+
+/* ---------- Progress indicator ---------- */
+
+.progress {
+    margin-bottom: 40px;
+}
+
+.progress__list {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    padding-left: 0;
+    margin: 0;
+}
+
+.progress__step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+.progress__step--active .progress__circle {
+    background: var(--tr-forest);
+    color: var(--tr-paper);
+}
+
+.progress__circle {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--tr-forest);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--tr-forest);
+    z-index: 2;
+}
+
+.progress__label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--tr-soft);
+    white-space: nowrap;
+}
+
+.progress__step--active .progress__label {
+    color: var(--tr-ink);
+}
+
+.progress__line {
+    flex: 1;
+    height: 1px;
+    background: var(--tr-rule);
+    margin: 0 var(--s1);
+    position: relative;
+    z-index: 1;
+}
+
+.progress__step--active ~ li .progress__line {
+    background: var(--tr-rule);
+}
+
+/* ---------- Body layout ---------- */
+
+.transfers-body {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    margin-bottom: 64px;
+}
+
+.transfers-form-col { min-width: 0; }
+.transfers-panel-col { min-width: 0; }
+
+/* ---------- Form & steps ---------- */
+
+.transfers-form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.step { display: none; }
+.step--active { display: block; }
+
+.step__title {
+    margin: 0 0 24px;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--tr-ink);
+}
+
+/* ---------- Field ---------- */
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field__label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tr-soft);
+}
+
+.field__error {
+    font-size: 0.78rem;
+    color: var(--tr-neg);
+    margin-top: 4px;
+}
+
+/* ---------- Input line & input ---------- */
+
+.input-line {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--tr-rule);
+    border-radius: var(--tr-radius-sm);
+    background: #fff;
+    transition: border-color var(--transition);
+}
+.input-line:focus-within { border-color: var(--tr-brass); }
+
+.input {
+    flex: 1;
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 0.95rem;
+    color: var(--tr-ink);
+    background: transparent;
+    border: 0;
+    outline: none;
+}
+.input::placeholder { color: var(--tr-soft); }
+.input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.balance-line {
+    margin: 4px 0 0;
+    font-size: 0.82rem;
+    color: var(--tr-soft);
+}
+
+/* ---------- Gift tabs ---------- */
+
+.gift-tabs {
+    display: flex;
+    gap: 8px;
+    border: 1px solid var(--tr-rule);
+    border-radius: var(--tr-radius-sm);
+    background: #fff;
+}
+.gift-tab {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tr-soft);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    cursor: pointer;
+    transition: color var(--transition), background var(--transition);
+}
+.gift-tab:hover { color: var(--tr-forest); }
+.gift-tab.is-active {
+    color: var(--tr-forest);
+    background: var(--tr-paper-2);
+    border-bottom: 2px solid var(--tr-forest);
+}
+.gift-tab:first-child {
+    border-top-left-radius: var(--tr-radius-sm);
+    border-bottom-left-radius: var(--tr-radius-sm);
+}
+.gift-tab:last-child {
+    border-top-right-radius: var(--tr-radius-sm);
+    border-bottom-right-radius: var(--tr-radius-sm);
+}
+
+/* ---------- Contacts ---------- */
+
+.contacts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--tr-rule);
+    border-radius: var(--tr-radius-sm);
+    background: #fff;
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition);
+    text-align: center;
+}
+
+.contact:hover {
+    border-color: var(--tr-brass);
+    background: var(--tr-paper-2);
+}
+
+.contact.is-selected {
+    border-color: var(--tr-forest);
+    background: var(--tr-paper);
+}
+
+.contact--add {
+    border-style: dashed;
+    color: var(--tr-soft);
+}
+
+.contact--add:hover {
+    border-color: var(--tr-brass);
+    color: var(--tr-brass);
+    background: transparent;
+}
+
+.contact__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--tr-radius-sm);
+    background: var(--tr-paper-2);
+    display: grid;
+    place-items: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--tr-ink);
+}
+
+.contact__avatar--add {
+    background: transparent;
+    font-size: 1.2rem;
+    border: 1px dashed var(--tr-soft);
+}
+
+.contact__name {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--tr-ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ---------- Bank field ---------- */
+
+.bank-field {
+    margin-top: var(--s3);
+    padding-top: var(--s3);
+    border-top: 1px solid var(--tr-rule);
+    padding-left: 0;
+}
+
+/* ---------- Amount chips ---------- */
+
+.amount-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.chip {
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--tr-soft);
+    background: #fff;
+    border: 1px solid var(--tr-rule);
+    border-radius: var(--tr-radius-sm);
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.chip:hover {
+    border-color: var(--tr-brass);
+    color: var(--tr-brass);
+}
+
+.chip.is-active {
+    background: var(--tr-forest);
+    border-color: var(--tr-forest);
+    color: var(--tr-paper);
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: 1px solid var(--tr-forest);
+    border-radius: var(--tr-radius-sm);
+    background: transparent;
+    color: var(--tr-forest);
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.btn:hover {
+    background: var(--tr-forest);
+    color: var(--tr-paper);
+}
+
+.btn--gold {
+    border-color: var(--tr-brass);
+    color: var(--tr-brass);
+}
+
+.btn--gold:hover {
+    background: var(--tr-brass);
+    color: #fff;
+}
+
+.btn--ghost {
+    border-color: var(--tr-rule);
+    color: var(--tr-ink);
+}
+
+.btn--ghost:hover {
+    border-color: var(--tr-forest);
+    background: var(--tr-paper-2);
+}
+
+.btn--block {
+    width: 100%;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--tr-brass);
+    outline-offset: 2px;
+}
+
+/* ---------- Ledger (Step 2 review) ---------- */
+
+.ledger {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+.ledger th {
+    padding: 14px 8px;
+    border-bottom: 1px solid var(--tr-ink);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-align: left;
+    text-transform: uppercase;
+    color: var(--tr-soft);
+}
+
+.ledger th:last-child {
+    text-align: right;
+}
+
+.review-row {
+    display: grid;
+    display: table-row;
+    gap: 16px;
+    padding: 14px 8px;
+    border-bottom: 1px solid var(--tr-rule);
+    align-items: center;
+}
+
+.review-label {
+    font-size: 0.85rem;
+    color: var(--tr-soft);
+}
+
+.review-value {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--tr-ink);
+    text-align: right;
+}
+
+.review-row.is-editable {
+    cursor: pointer;
+}
+
+.review-row.is-editable:hover .review-value {
+    color: var(--tr-brass);
+    text-decoration: underline;
+}
+
+.bank-review-row,
+.narration-review-row {
+    font-size: 0.85rem;
+    color: var(--tr-soft);
+}
+
+/* ---------- Done panel (Step 3) ---------- */
+
+.done-panel {
+    text-align: center;
+    padding: 32px 24px;
+}
+
+.check-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 24px;
+    color: var(--tr-pos);
+}
+
+.done-title {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+}
+
+.done-ref {
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.ref-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tr-soft);
+    margin-right: 8px;
+}
+
+.ref-number {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--tr-ink);
+    font-family: 'Courier New', monospace;
+}
+
+.done-amount {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--tr-ink);
+    margin-bottom: 16px;
+}
+
+.done-recipient {
+    font-size: 1rem;
+    color: var(--tr-soft);
+    margin-bottom: 24px;
+}
+
+.done-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ---------- Right panel ---------- */
+
+.transfers-panel {
+    padding: 0;
+}
+
+.transfers-panel--sticky {
+    position: sticky;
+    top: 96px;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid var(--tr-rule);
+    border-radius: var(--tr-radius);
+    margin-bottom: 24px;
+}
+
+.card__head {
+    padding: 20px 20px 12px;
+    border-bottom: 1px solid var(--tr-rule);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.card__eyebrow {
+    margin: 0;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tr-brass);
+}
+
+.card__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--tr-ink);
+}
+
+/* Daily limit */
+
+.limit-panel {
+    padding: 16px 20px 20px;
+}
+
+.limit-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.limit-label {
+    font-size: 0.85rem;
+    color: var(--tr-soft);
+}
+
+.limit-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--tr-ink);
+}
+
+.limit-bar {
+    height: 8px;
+    background: var(--tr-paper-2);
+    border-radius: var(--tr-radius-sm);
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.limit-bar__track {
+    height: 100%;
+    width: 100%;
+}
+
+.limit-bar__fill {
+    height: 100%;
+    width: 17%;
+    background: var(--tr-forest);
+    border-radius: var(--tr-radius-sm);
+}
+
+.limit-text {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--tr-soft);
+}
+
+/* Recent recipients */
+
+.recipients {
+    padding: 16px 20px 20px;
+}
+
+.recipient-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--tr-rule);
+}
+
+.recipient-item:last-child {
+    border-bottom: 0;
+}
+
+.recipient-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--tr-radius-sm);
+    background: var(--tr-paper-2);
+    display: grid;
+    place-items: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--tr-ink);
+    flex-shrink: 0;
+}
+
+.recipient-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--tr-ink);
+}
+
+/* Note */
+
+.note {
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.note__rule {
+    width: 2px;
+    height: 16px;
+    background: var(--tr-brass);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.note__text {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--tr-soft);
+    line-height: 1.5;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1000px) {
+    .transfers-body {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .transfers-panel--sticky {
+        position: static;
+        top: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .transfers-header {
+        padding: 40px 0 20px;
+    }
+
+    .contacts {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        scrollbar-width: none;
+    }
+
+    .contacts::-webkit-scrollbar {
+        display: none;
+    }
+
+    .contact {
+        flex: 0 0 auto;
+        width: 120px;
+    }
+
+    .btn--block {
+        width: 100%;
+    }
+
+    .done-actions {
+        flex-direction: column;
+    }
+
+    .done-actions .btn {
+        width: 100%;
+    }
+
+    .transfer-amount {
+        font-size: 1.5rem;
+    }
+}

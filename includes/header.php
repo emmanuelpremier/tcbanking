@@ -15,6 +15,7 @@ $activePage = $activePage ?? '';
 $navItems = [
     'home' => 'Home',
     'accounts' => 'Accounts',
+    'transfers' => 'Transfers',
     'loans' => 'Loans',
     'about' => 'About',
     'contact' => 'Contact',
@@ -101,3 +102,5 @@ $navItems = [
 </header>
 
 <main id="main-content">
+
+
