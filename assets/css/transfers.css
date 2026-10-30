@@ -53,7 +53,7 @@
 /* ---------- Progress indicator ---------- */
 
 .progress {
-    margin-bottom: 40px;
+    margin: 32px 0;
 }
 
 .progress__list {
@@ -201,39 +201,30 @@
 
 .gift-tabs {
     display: flex;
-    gap: 8px;
-    border: 1px solid var(--tr-rule);
-    border-radius: var(--tr-radius-sm);
-    background: #fff;
+    gap: 0;
+    border-bottom: 1px solid var(--tr-rule);
+    margin-bottom: 24px;
 }
 .gift-tab {
     flex: 1;
-    padding: 10px 14px;
-    font-size: 0.78rem;
+    padding: 10px 0;
+    font-size: 0.72rem;
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--tr-soft);
+    color: var(--tr-ink);
     background: transparent;
     border: 0;
-    border-radius: 0;
+    border-bottom: 2px solid transparent;
     cursor: pointer;
-    transition: color var(--transition), background var(--transition);
+    transition: color var(--transition), border-color var(--transition);
 }
 .gift-tab:hover { color: var(--tr-forest); }
 .gift-tab.is-active {
-    color: var(--tr-forest);
-    background: var(--tr-paper-2);
-    border-bottom: 2px solid var(--tr-forest);
+    color: var(--tr-ink);
+    border-bottom-color: var(--tr-brass);
 }
-.gift-tab:first-child {
-    border-top-left-radius: var(--tr-radius-sm);
-    border-bottom-left-radius: var(--tr-radius-sm);
-}
-.gift-tab:last-child {
-    border-top-right-radius: var(--tr-radius-sm);
-    border-bottom-right-radius: var(--tr-radius-sm);
-}
+.gift-tab:first-child { margin-right: 12px; }
 
 /* ---------- Contacts ---------- */
 
@@ -725,3 +716,4 @@
         font-size: 1.5rem;
     }
 }
+

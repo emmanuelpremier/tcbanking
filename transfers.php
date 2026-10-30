@@ -19,28 +19,28 @@ require __DIR__ . '/includes/header.php';
         <p class="transfers-label">Move money</p>
         <h1 class="transfers-title" id="transfers-heading">Transfers</h1>
         <p class="transfers-lede">Send funds to a T&amp;C account or another bank in a few simple steps.</p>
+
+        <!-- ============ Progress indicator ============ -->
+        <nav class="progress" aria-label="Transfer progress">
+            <ol class="progress__list">
+                <li class="progress__step progress__step--active" data-step="1">
+                    <span class="progress__circle">1</span>
+                    <span class="progress__label">Details</span>
+                </li>
+                <li class="progress__step" data-step="2">
+                    <span class="progress__line"></span>
+                    <span class="progress__circle">2</span>
+                    <span class="progress__label">Review</span>
+                </li>
+                <li class="progress__step" data-step="3">
+                    <span class="progress__line"></span>
+                    <span class="progress__circle">3</span>
+                    <span class="progress__label">Done</span>
+                </li>
+            </ol>
+        </nav>
     </div>
 </section>
-
-<!-- ============ Progress indicator ============ -->
-<nav class="progress" aria-label="Transfer progress">
-    <ol class="progress__list">
-        <li class="progress__step progress__step--active" data-step="1">
-            <span class="progress__circle">1</span>
-            <span class="progress__label">Details</span>
-        </li>
-        <li class="progress__step" data-step="2">
-            <span class="progress__line"></span>
-            <span class="progress__circle">2</span>
-            <span class="progress__label">Review</span>
-        </li>
-        <li class="progress__step" data-step="3">
-            <span class="progress__line"></span>
-            <span class="progress__circle">3</span>
-            <span class="progress__label">Done</span>
-        </li>
-    </ol>
-</nav>
 
 <!-- ============ Body: two-column grid ============ -->
 <div class="container transfers-body">

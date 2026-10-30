@@ -44,7 +44,17 @@
 
         // Close the menu if the viewport is resized to desktop width.
         window.addEventListener('resize', function () {
-            if (window.innerWidth > 768) {
+            if (window.innerWidth > 900) {
+                closeMenu();
+            }
+        });
+
+        // Close the menu when the user clicks outside the nav panel.
+        document.addEventListener('click', function (event) {
+            var target = event.target;
+            var isToggle = target.closest('.nav-toggle');
+            var isNav = target.closest('#primary-nav');
+            if (!isToggle && !isNav && nav.classList.contains('is-open')) {
                 closeMenu();
             }
         });

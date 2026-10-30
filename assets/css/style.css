@@ -62,6 +62,7 @@ body {
     background: var(--paper);
     -webkit-font-smoothing: antialiased;
 }
+html { scroll-padding-top: 80px; }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
@@ -267,6 +268,73 @@ input {
     font-weight: 500;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+.top-strip__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s2);
+    padding-block: 6px;
+    max-width: 100%;
+}
+
+.top-strip__note {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.top-strip__links {
+    display: flex;
+    gap: var(--s3);
+    white-space: nowrap;
+}
+
+.top-strip__links a {
+    color: rgba(247, 244, 236, 0.72);
+    white-space: nowrap;
+}
+
+.top-strip__links a:hover {
+    color: var(--brass-soft);
+}
+
+/* Top strip: shrink for narrow screens; must stay on one line. */
+@media (max-width: 600px) {
+    .top-strip {
+        font-size: 0.62rem;
+        letter-spacing: 0.08em;
+        padding-inline: 16px;
+    }
+
+    .top-strip__inner {
+        gap: 14px;
+    }
+
+    .top-strip__links {
+        gap: 14px;
+    }
+
+    .top-strip__links a {
+        font-size: 0.62rem;
+    }
+}
+
+/* Top strip: hide Help so note + Log in + Log out still fit on one line under 400px. */
+@media (max-width: 400px) {
+    .top-strip__links li:first-child {
+        display: none;
+    }
+}
+.top-strip {
+    background: var(--forest-deep);
+    color: var(--paper);
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
 }
 
 .top-strip__inner {
@@ -296,7 +364,9 @@ input {
 
 /* ---------- Header: tier 2, masthead ---------- */
 .masthead {
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     background: var(--paper);
     border-bottom: 1px solid var(--rule);
 }
@@ -306,7 +376,11 @@ input {
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: var(--s3);
-    min-height: 78px;
+}
+
+.masthead .container {
+    width: 100%;
+    padding-inline: var(--s3);
 }
 
 .logo {
@@ -369,18 +443,31 @@ input {
     display: none;
     width: 40px;
     height: 40px;
-    align-content: center;
-    justify-items: center;
-    gap: 5px;
+    place-items: center;
+    gap: 6px;
+    position: relative;
 }
 
 .nav-toggle-bar {
     display: block;
     width: 20px;
-    height: 1px;
+    height: 2px;
     background: var(--ink);
+    border-radius: 2px;
+    transition: transform var(--transition), opacity var(--transition);
 }
 
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
 /* ---------- Header: actions ---------- */
 .header-actions {
     display: flex;
@@ -1612,58 +1699,117 @@ input {
         margin-bottom: var(--s3);
     }
 
-    /* Masthead collapses into a full-width dropdown. */
+    /* Masthead: sticky paper bar with a hairline bottom border. */
+    .masthead {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: var(--paper);
+        border-bottom: 1px solid var(--rule);
+    }
+
+    /* Masthead row: logo on the left; hamburger + bell/avatar on the right. */
     .masthead__inner {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         gap: var(--s2);
-        min-height: 64px;
     }
 
+    .logo {
+        flex: 0 0 auto;
+        margin: 0;
+    }
+
+    /* Mobile dropdown: full-width panel directly under the masthead. */
+    .primary-nav {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        width: 100%;
+        z-index: 1000;
+        display: block;
+        visibility: hidden;
+        opacity: 0;
+        background: var(--paper);
+        border-top: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        transition: opacity var(--transition), visibility var(--transition);
+        margin: 0;
+        padding: 0;
+    }
+
+    .primary-nav.is-open {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .nav-list {
+        display: block;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-item {
+        border-top: 1px solid var(--rule);
+        margin-left: -2px;
+    }
+
+    .nav-item:first-child {
+        border-top: 0;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 16px 24px;
+        font-size: 0.95rem;
+        color: var(--ink);
+        border-bottom: 0;
+        text-decoration: none;
+    }
+
+    .nav-link:hover {
+        color: var(--ink);
+    }
+
+    .nav-link.active {
+        color: var(--forest-deep);
+        background: var(--paper-2);
+        border-left: 2px solid var(--brass);
+        margin-left: -2px;
+    }
+
+    /* Mobile masthead row: logo left, hamburger + bell/avatar right. */
     .nav-toggle {
         display: grid;
         order: 3;
     }
 
     .header-actions {
-        order: 2;
-    }
-
-    .primary-nav {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        z-index: 50;
-        display: none;
-        background: var(--paper);
-        border-bottom: 1px solid var(--rule);
-    }
-
-    .primary-nav.is-open {
-        display: block;
-    }
-
-    .nav-list {
-        display: block;
-        padding: 0 var(--s3) var(--s2);
-    }
-
-    .nav-item + .nav-item {
-        border-top: 1px solid var(--rule);
-    }
-
-    .nav-link {
-        display: block;
-        padding: 14px 0;
-    }
-
-    .footer-grid {
-        grid-template-columns: 1fr 1fr;
+        flex: 1 1 auto;
+        min-width: 0;
+        display: flex;
+        align-items: center;
         gap: var(--s3);
-        padding: var(--s4) 0 var(--s3);
+    }
+
+    .header-search {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .header-search input {
+        width: 100%;
+    }
+
+    .header-bell,
+    .header-avatar {
+        flex: 0 0 auto;
     }
 }
 

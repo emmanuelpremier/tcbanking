@@ -40,6 +40,7 @@
     const refNumberEl = document.getElementById('ref-number');
     const doneAmountEl = document.getElementById('done-amount');
     const doneRecipientEl = document.getElementById('done-recipient');
+    const balanceValueEl = document.getElementById('balance-value');
 
     // Error containers
     const acctNumError = document.getElementById('account-error');
@@ -76,6 +77,7 @@
             availableBalance = parseFloat(opt.getAttribute('data-available').replace(/,/g, '')) || 0;
             currency = opt.getAttribute('data-currency') || '₦';
             updateAmountDisplay();
+            updateBalanceLine();
         });
         // Trigger change on first option to set initial balance
         if (fromAccountSel.options.length > 0) {
@@ -170,8 +172,13 @@
         }
     }
 
+    function updateBalanceLine() {
+        if (!balanceValueEl) return;
+        balanceValueEl.textContent = formatCurrency(availableBalance);
+    }
+
     function formatCurrency(num) {
-        return currency + ' ' + num.toLocaleString(undefined, {
+        return currency + num.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
@@ -338,6 +345,7 @@
         anotherBtn.addEventListener('click', function () {
             // Reset form
             form.reset();
+            fromAccountSel.dispatchEvent(new Event('change'));
             selectedContact = null;
             selectedChip = null;
             transferType = 'self';
