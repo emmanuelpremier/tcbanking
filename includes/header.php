@@ -36,8 +36,8 @@ $navItems = [
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
 
-<header class="site-header">
-    <!-- Tier 1: thin top strip -->
+<div class="site-top">
+
     <div class="top-strip">
         <div class="container top-strip__inner">
             <p class="top-strip__note">Secure online banking</p>
@@ -49,9 +49,11 @@ $navItems = [
         </div>
     </div>
 
-    <!-- Tier 2: masthead -->
-    <div class="masthead">
-        <div class="container masthead__inner">
+    <header class="site-header">
+
+        <!-- Tier 2: masthead -->
+        <div class="masthead">
+            <div class="container masthead__inner">
             <a class="logo" href="<?= BASE_URL ?>index.php" aria-label="T&amp;C Banking &mdash; home">
                 <span class="logo-mark" aria-hidden="true">T&amp;C</span>
                 <span class="logo-text" aria-hidden="true">Banking</span>
@@ -99,7 +101,7 @@ $navItems = [
             </div>
         </div>
     </div>
-</header>
+</div>
 
 <main id="main-content">
 

@@ -54,7 +54,7 @@
     let selectedChip = null;
     let transferType = 'self'; // 'self' or 'third'
     let availableBalance = 0;
-    let currency = '₦';
+    let currency = 'â‚¦';
 
     // ---------- Init ----------
     document.addEventListener('DOMContentLoaded', function () {
@@ -75,7 +75,7 @@
         fromAccountSel.addEventListener('change', function () {
             const opt = this.options[this.selectedIndex];
             availableBalance = parseFloat(opt.getAttribute('data-available').replace(/,/g, '')) || 0;
-            currency = opt.getAttribute('data-currency') || '₦';
+            currency = opt.getAttribute('data-currency') || 'â‚¦';
             updateAmountDisplay();
             updateBalanceLine();
         });
@@ -133,7 +133,7 @@
                 chips.forEach(c => c.classList.remove('is-active'));
                 this.classList.add('is-active');
                 selectedChip = this;
-                amountInput.value = this.dataset.amount;
+                amountInput.value = formatAmount(parseAmount(this.dataset.amount));
                 validateStep1();
             });
         });
@@ -145,13 +145,13 @@
 
         amountInput.addEventListener('input', function () {
             // Strip any non-numeric except dot
-            let val = this.value.replace(/[^0-9.]/g, '');
+            formatAmountInput(this);
             // Prevent multiple dots
-            const parts = val.split('.');
-            if (parts.length > 2) {
-                val = parts[0] + '.' + parts.slice(1).join('');
+
+
+                this.value = formatAmount(parseAmount(this.value));
             }
-            this.value = val;
+            this.value = formatAmount(parseAmount(this.value));
 
             chips.forEach(c => c.classList.remove('is-active'));
             selectedChip = null;
@@ -166,26 +166,26 @@
 
     function updateAmountDisplay() {
         if (!amountInput) return;
-        const raw = parseFloat(amountInput.value) || 0;
+        const raw = parseAmount(amountInput.value);
         if (raw > 0) {
-            amountInput.value = formatCurrency(raw);
+            amountInput.value = formatAmount(raw);
         }
     }
 
     function updateBalanceLine() {
         if (!balanceValueEl) return;
-        balanceValueEl.textContent = formatCurrency(availableBalance);
+        balanceValueEl.textContent = formatAmount(availableBalance);
     }
 
-    function formatCurrency(num) {
+    function formatAmount(num) {
         return currency + num.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
     }
 
-    function parseCurrency(str) {
-        return parseFloat(str.replace(/[^0-9.]/g, '')) || 0;
+    function parseAmount(str) {
+        return parseFloat(String(str).replace(/,/g, '')) || 0;
     }
 
     // ---------- Step switching ----------
@@ -238,12 +238,12 @@
         }
 
         // Amount validation
-        const amount = parseCurrency(amountInput.value);
+        const amount = parseAmount(amountInput.value);
         if (amount <= 0) {
             showError(amountError, 'Amount must be greater than 0');
             valid = false;
         } else if (amount > availableBalance) {
-            showError(amountError, 'Amount exceeds available balance (' + formatCurrency(availableBalance) + ')');
+            showError(amountError, 'Amount exceeds available balance (' + formatAmount(availableBalance) + ')');
             valid = false;
         } else {
             hideError(amountError);
@@ -298,18 +298,18 @@
     // ---------- Populate review (step 2) ----------
     function populateReview() {
         const accOpt = fromAccountSel.options[fromAccountSel.selectedIndex];
-        const amount = parseCurrency(amountInput.value);
+        const amount = parseAmount(amountInput.value);
 
         if (reviewFromAcc) reviewFromAcc.textContent = accOpt ? accOpt.text : '';
-        if (reviewFromAmt) reviewFromAmt.textContent = formatCurrency(availableBalance);
+        if (reviewFromAmt) reviewFromAmt.textContent = formatAmount(availableBalance);
         if (reviewType) reviewType.textContent = transferType === 'third' ? 'Third-party transfer' : 'Self transfer';
         if (reviewToName) reviewToName.textContent = recipientInput.value.trim();
         if (reviewToAcc) reviewToAcc.textContent = acctNumInput.value;
         if (reviewBank) {
-            reviewBank.textContent = transferType === 'third' ? (document.getElementById('bank').value || '—') : '—';
+            reviewBank.textContent = transferType === 'third' ? (document.getElementById('bank').value || 'â€”') : 'â€”';
         }
-        if (reviewAmount) reviewAmount.textContent = formatCurrency(amount);
-        if (reviewNarration) reviewNarration.textContent = narrationInput.value.trim() || '—';
+        if (reviewAmount) reviewAmount.textContent = formatAmount(amount);
+        if (reviewNarration) reviewNarration.textContent = narrationInput.value.trim() || 'â€”';
     }
 
     // ---------- Edit button ----------
@@ -327,10 +327,10 @@
             if (!validateStep2()) return;
 
             const ref = generateReference();
-            const amount = parseCurrency(amountInput.value);
+            const amount = parseAmount(amountInput.value);
 
             if (refNumberEl) refNumberEl.textContent = ref;
-            if (doneAmountEl) doneAmountEl.textContent = formatCurrency(amount) + ' to ' + recipientInput.value.trim();
+            if (doneAmountEl) doneAmountEl.textContent = formatAmount(amount) + ' to ' + recipientInput.value.trim();
             if (doneRecipientEl) doneRecipientEl.textContent = recipientInput.value.trim();
 
             showStep(3);

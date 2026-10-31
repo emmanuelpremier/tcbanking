@@ -22,9 +22,12 @@
             toggle.setAttribute('aria-expanded', 'false');
         }
 
+        var scrollY = 0;
+
         function openMenu() {
             nav.classList.add('is-open');
             toggle.setAttribute('aria-expanded', 'true');
+            scrollY = window.scrollY;
         }
 
         toggle.addEventListener('click', function () {
@@ -46,6 +49,32 @@
         window.addEventListener('resize', function () {
             if (window.innerWidth > 900) {
                 closeMenu();
+            }
+        });
+
+        // Track panel scroll so that scrolling inside the panel never
+        // triggers a close; only the body/page scrolling matters.
+        var panelScrollY = 0;
+        var isInsidePanel = false;
+
+        nav.addEventListener('scroll', function () {
+            panelScrollY = nav.scrollTop;
+            isInsidePanel = true;
+        });
+
+        window.addEventListener('scroll', function () {
+            if (nav.classList.contains('is-open')) {
+                // Scrolling inside the panel: still update the stored
+                // position so the 10px threshold is measured against
+                // the panel's own scroll, not the window.
+                if (isInsidePanel) {
+                    panelScrollY = nav.scrollTop;
+                    isInsidePanel = false;
+                } else {
+                    if (Math.abs(window.scrollY - scrollY) > 10) {
+                        closeMenu();
+                    }
+                }
             }
         });
 

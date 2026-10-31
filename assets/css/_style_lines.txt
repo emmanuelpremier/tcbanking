@@ -1,0 +1,1876 @@
+/* ============================================================
+   T&C Banking - main stylesheet
+   Classic private-bank design system.
+   Serif typography throughout, warm paper surfaces, deep
+   forest panels, a single brass accent and hairline rules.
+   No gradients, no shadows, no glass, no pill shapes.
+   Radius 2-4px only. Spacing scale: 8/16/24/40/64/96.
+   ============================================================ */
+
+/* ---------- Design tokens ---------- */
+:root {
+    /* Colour */
+    --paper: #F7F4EC;
+    --paper-2: #EFEADD;
+    --ink: #14201A;
+    --ink-soft: #55625A;
+    --forest: #0F3D2E;
+    --forest-deep: #0A2A20;
+    --brass: #A88B4A;
+    --brass-soft: #D8C79A;
+    --rule: #D9D2C0;
+    --positive: #2F6B4F;
+    --positive-light: #8FC9A4; /* positive text on dark forest surfaces */
+    --negative: #8C3B32;
+
+    /* Typography */
+    --font-heading: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-body: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --size-label: 0.7rem;
+    --tracking-label: 0.1em;
+
+    /* Spacing scale */
+    --s1: 8px;
+    --s2: 16px;
+    --s3: 24px;
+    --s4: 40px;
+    --s5: 64px;
+    --s6: 96px;
+
+    /* Header layout */
+    --strip-h: 36px;
+
+    /* Shape */
+    --radius: 3px;
+    --radius-sm: 2px;
+    --container-width: 1180px;
+    --transition: 150ms ease;
+}
+
+@media (max-width: 600px) {
+    :root {
+        --strip-h: 30px;
+    }
+}
+
+/* Top strip: fixed height strip that scrolls away; the masthead sticks. */
+.site-top {
+    position: sticky;
+    top: calc(var(--strip-h) * -1);
+    z-index: 1000;
+}
+
+
+/* ---------- Reset / base ---------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+}
+html { scroll-padding-top: 80px; }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0 0 0.5em;
+}
+
+p {
+    margin: 0 0 1em;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transition), border-color var(--transition);
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+input {
+    font: inherit;
+    color: inherit;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* Visible keyboard focus everywhere. */
+:focus-visible {
+    outline: 2px solid var(--brass);
+    outline-offset: 2px;
+}
+
+::selection {
+    background: var(--brass-soft);
+    color: var(--ink);
+}
+
+/* ---------- Utilities ---------- */
+.container {
+    width: 100%;
+    max-width: var(--container-width);
+    margin-inline: auto;
+    padding-inline: var(--s3);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Visually hidden until keyboard-focused. */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 1000;
+    padding: 10px var(--s2);
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--forest);
+}
+
+.skip-link:focus {
+    left: 0;
+    top: 0;
+}
+
+/* Uppercase small-caps label used for section labels and captions. */
+.label {
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-block;
+    padding: 12px var(--s3);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    text-align: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+}
+
+/* Primary: solid forest with paper text; brass border on hover. */
+.btn--gold {
+    background: var(--forest);
+    border-color: var(--forest);
+    color: var(--paper);
+}
+
+.btn--gold:hover {
+    border-color: var(--brass);
+}
+
+/* Secondary: forest outline; fills on hover. */
+.btn--ghost {
+    background: transparent;
+    border-color: var(--forest);
+    color: var(--forest);
+}
+
+.btn--ghost:hover {
+    background: var(--forest);
+    color: var(--paper);
+}
+
+.btn--block {
+    display: block;
+    width: 100%;
+}
+
+/* ---------- Forms ---------- */
+.field {
+    margin-bottom: var(--s2);
+}
+
+.field__label {
+    display: block;
+    margin-bottom: var(--s1);
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.input {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition);
+}
+
+.input::placeholder {
+    color: var(--ink-soft);
+    opacity: 0.75;
+}
+
+.input:hover {
+    border-color: var(--brass-soft);
+}
+
+.input:focus {
+    border-color: var(--brass);
+}
+
+/* ---------- Header: tier 1, top strip ---------- */
+.top-strip {
+    background: var(--forest-deep);
+    color: var(--paper);
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    white-space: nowrap;
+    height: var(--strip-h);
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Top strip rules ended; the sticky unit begins. */
+/* ---------- Header: tier 2, masthead ---------- */
+/* Sticky behaviour lives on .site-top (layout above), which wraps the
+ * top strip and the masthead. Both scroll together as one sticky unit. */
+
+.top-strip__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s2);
+    padding-block: 6px;
+    max-width: 100%;
+}
+
+.top-strip__note {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.top-strip__links {
+    display: flex;
+    gap: var(--s3);
+    white-space: nowrap;
+}
+
+.top-strip__links a {
+    color: rgba(247, 244, 236, 0.72);
+    white-space: nowrap;
+}
+
+.top-strip__links a:hover {
+    color: var(--brass-soft);
+}
+
+/* Top strip: shrink for narrow screens; must stay on one line. */
+@media (max-width: 600px) {
+    .top-strip {
+        font-size: 0.62rem;
+        letter-spacing: 0.08em;
+        padding-inline: 16px;
+    }
+
+    .top-strip__inner {
+        gap: 14px;
+    }
+
+    .top-strip__links {
+        gap: 14px;
+    }
+
+    .top-strip__links a {
+        font-size: 0.62rem;
+    }
+}
+
+/* Top strip: hide Help so note + Log in + Log out still fit on one line under 400px. */
+@media (max-width: 400px) {
+    .top-strip__links li:first-child {
+        display: none;
+    }
+}
+/* ---------- Header: tier 2, masthead ---------- */
+/* Sticky behaviour lives on .site-top (layout above), which wraps the
+ * top strip and the masthead. Both scroll together as one sticky unit. */
+
+.masthead__inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--s3);
+}
+
+.masthead .container {
+    width: 100%;
+    padding-inline: var(--s3);
+}
+
+.logo {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    justify-self: start;
+}
+
+.logo-mark {
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--ink);
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--brass);
+}
+
+.logo-text {
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+/* ---------- Header: desktop top row ---------- */
+.primary-nav {
+    justify-self: center;
+}
+
+.nav-list {
+    display: flex;
+    gap: var(--s4);
+}
+
+.nav-link {
+    display: inline-block;
+    padding: 4px 0;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    border-bottom: 1px solid transparent;
+}
+
+.nav-link:hover {
+    color: var(--ink);
+}
+
+/* Active link: 1px brass underline, no pill or background. */
+.nav-link.active {
+    color: var(--ink);
+    border-bottom-color: var(--brass);
+}
+
+/* Mobile menu toggle (hidden on desktop). */
+.nav-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    position: relative;
+}
+
+.nav-toggle-bar {
+    width: 22px;
+    height: 2px;
+    background: currentColor;
+    display: block;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---------- Header: actions ---------- */
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: var(--s3);
+}
+
+/* Search field: bottom border only. */
+.header-search {
+    display: flex;
+    align-items: center;
+    gap: var(--s1);
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--rule);
+    transition: border-color var(--transition);
+}
+
+.header-search:focus-within {
+    border-bottom-color: var(--brass);
+}
+
+.header-search__icon {
+    flex: none;
+    color: var(--ink-soft);
+}
+
+.header-bell,
+.header-avatar {
+    flex: 0 0 auto;
+    color: var(--ink-soft);
+}
+
+.header-avatar:hover {
+    color: var(--ink);
+}
+
+
+/* Bell: thin-line icon with a tiny brass dot. */
+.header-bell {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    color: var(--ink);
+    transition: color var(--transition);
+}
+
+.header-bell:hover {
+    color: var(--brass);
+}
+
+.header-bell__dot {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    width: 6px;
+    height: 6px;
+    background: var(--brass);
+    border-radius: 50%;
+}
+
+/* User initial inside a 1px-bordered circle. */
+.header-avatar {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--forest);
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    transition: border-color var(--transition);
+}
+
+.header-avatar:hover {
+    border-color: var(--brass);
+}
+
+/* ---------- Summary band (full-width forest) ---------- */
+.summary {
+    padding-block: var(--s5);
+    color: var(--paper);
+    background: var(--forest);
+}
+
+.summary__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+    gap: var(--s5);
+    align-items: center;
+}
+
+.summary__date {
+    margin: 0 0 var(--s2);
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgba(247, 244, 236, 0.72);
+}
+
+.summary__greeting {
+    margin: 0 0 var(--s4);
+    font-family: var(--font-heading);
+    font-size: 2.6rem;
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--paper);
+}
+
+.summary__label {
+    margin: 0 0 var(--s1);
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--brass-soft);
+}
+
+.summary__amount {
+    margin: 0 0 var(--s2);
+    font-family: var(--font-heading);
+    font-size: 3.6rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--paper);
+}
+
+/* Kobo digits rendered smaller and lighter. */
+.summary__kobo {
+    font-size: 0.5em;
+    font-weight: 400;
+}
+
+.summary__change {
+    display: flex;
+    align-items: center;
+    gap: var(--s1);
+    margin: 0 0 var(--s4);
+    font-size: 0.9rem;
+    color: var(--positive-light);
+}
+
+.summary__change-icon {
+    flex: none;
+}
+
+.summary__card {
+    min-width: 0;
+}
+
+/* ---------- Dashboard: 12-column paper grid ---------- */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--s5);
+    align-items: start;
+    padding: var(--s5) 0 var(--s6);
+}
+
+/* Left column ~7/12, right column ~5/12. */
+.block--activity { grid-column: 1 / span 7; grid-row: 1; }
+.block--spending { grid-column: 1 / span 7; grid-row: 2; }
+.block--transfer { grid-column: 8 / span 5; grid-row: 1; }
+.block--gift     { grid-column: 8 / span 5; grid-row: 2; }
+
+/* ---------- Block head: brass label, heading, hairline rule ---------- */
+.block__head {
+    padding-bottom: var(--s2);
+    margin-bottom: var(--s3);
+    border-bottom: 1px solid var(--rule);
+}
+
+.block__label {
+    margin: 0 0 6px;
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--brass);
+}
+
+.block__head-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s2);
+}
+
+.block__title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+/* Small uppercase text link with a brass underline. */
+.block__link {
+    flex: none;
+    padding-bottom: 1px;
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--brass);
+    transition: color var(--transition);
+}
+
+.block__link:hover {
+    color: var(--ink);
+}
+
+/* ---------- Card (subtle panel, hairline border) ---------- */
+.card {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: var(--s3);
+}
+
+.card__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s2);
+    padding-bottom: var(--s2);
+    margin-bottom: var(--s2);
+    border-bottom: 1px solid var(--rule);
+}
+
+.card__title {
+    margin: 0;
+    font-size: 1.35rem;
+}
+
+.card__eyebrow {
+    margin: 0 0 var(--s1);
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.card__link {
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+}
+
+.card__link:hover {
+    color: var(--ink);
+    border-bottom-color: var(--brass);
+}
+
+/* ---------- Action buttons (on the forest summary band) ---------- */
+.summary__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s2);
+}
+
+/* Rectangular buttons, brass-soft hairline border, thin-line icons. */
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--paper);
+    background: transparent;
+    border: 1px solid var(--brass-soft);
+    border-radius: var(--radius);
+    transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+}
+
+/* Hover fills with paper and switches to ink text. */
+.action-btn:hover {
+    background: var(--paper);
+    color: var(--ink);
+}
+
+.action-btn__icon {
+    display: inline-flex;
+    flex: none;
+}
+
+/* ---------- Bank card (in the summary band) ---------- */
+.bank-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--s3);
+    width: 100%;
+    max-width: 440px;
+    aspect-ratio: 1.586;
+    padding: var(--s3);
+    color: var(--paper);
+    background-color: var(--forest-deep);
+    /* Very subtle fine-line pattern: 1px lines at 4% opacity. */
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(247, 244, 236, 0.04) 0,
+        rgba(247, 244, 236, 0.04) 1px,
+        transparent 1px,
+        transparent 8px
+    );
+    border: 1px solid rgba(216, 199, 154, 0.4);
+    border-radius: 6px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* "T&C Black" and "Visa" in brass lettering. */
+.bank-card__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s2);
+}
+
+.bank-card__tier,
+.bank-card__brand {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--brass);
+}
+
+.bank-card__mid {
+    display: grid;
+    gap: var(--s2);
+}
+
+/* Flat brass chip: small rectangle with thin lines. */
+.bank-card__chip {
+    display: grid;
+    grid-auto-rows: 1fr;
+    width: 42px;
+    height: 32px;
+    background: var(--brass);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.bank-card__chip span {
+    border-top: 1px solid rgba(10, 42, 32, 0.3);
+}
+
+.bank-card__chip span:first-child {
+    border-top: 0;
+}
+
+/* Number in wide letter-spacing. */
+.bank-card__number {
+    margin: 0;
+    font-size: 1.05rem;
+    letter-spacing: 0.2em;
+}
+
+.bank-card__bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s2);
+}
+
+.bank-card__field {
+    display: grid;
+    gap: 3px;
+}
+
+.bank-card__field--right {
+    text-align: right;
+}
+
+/* Small spaced-capital labels. */
+.bank-card__label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgba(247, 244, 236, 0.62);
+}
+
+.bank-card__value {
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper);
+}
+
+/* ---------- Gift cards ---------- */
+.gift-tabs {
+    display: flex;
+    gap: var(--s2);
+}
+
+/* Tabs: plain text with a 2px brass underline when active, no pill. */
+.gift-tab {
+    padding-bottom: 6px;
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 2px solid transparent;
+    transition: color var(--transition), border-color var(--transition);
+}
+
+.gift-tab:hover {
+    color: var(--ink);
+}
+
+.gift-tab.is-active {
+    color: var(--ink);
+    border-bottom-color: var(--brass);
+}
+
+.gift-panel__note {
+    margin-bottom: var(--s2);
+    color: var(--ink-soft);
+}
+
+.gift-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s2);
+}
+
+.gift-tile {
+    display: grid;
+    justify-items: center;
+    gap: var(--s1);
+    padding: var(--s3) var(--s2);
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    transition: border-color var(--transition);
+}
+
+.gift-tile:hover {
+    border-color: var(--brass);
+}
+
+.gift-tile__logo {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--forest);
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+}
+
+.gift-tile__brand {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--ink);
+}
+
+.gift-tile__value {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+}
+
+.gift-redeem {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--s2);
+}
+
+.gift-redeem .input {
+    flex: 1;
+}
+
+/* ---------- Recent activity (dividers, not boxes) ---------- */
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+}
+
+.activity-item:first-child {
+    padding-top: 0;
+}
+
+.activity-item:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+/* Small thin-line in/out arrow; ledger rows have no backgrounds. */
+.activity-item__arrow {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 18px;
+    height: 18px;
+    color: var(--ink-soft);
+}
+
+.activity-item--in .activity-item__arrow {
+    color: var(--positive);
+}
+
+.activity-item__meta {
+    display: grid;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-item__name {
+    font-size: 0.98rem;
+    font-weight: 500;
+}
+
+.activity-item__sub {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+/* Right-aligned tabular figures: + in --positive, minus in --ink. */
+.activity-item__amount {
+    flex: none;
+    margin-left: auto;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.activity-item--in .activity-item__amount {
+    color: var(--positive);
+}
+
+/* ---------- Quick transfer ---------- */
+.contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s2);
+    margin-bottom: var(--s3);
+}
+
+.contact {
+    display: grid;
+    justify-items: center;
+    gap: var(--s1);
+}
+
+.contact__avatar {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--forest);
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    transition: border-color var(--transition), color var(--transition);
+}
+
+.contact:hover .contact__avatar {
+    border-color: var(--brass);
+}
+
+.contact__avatar--add {
+    color: var(--ink-soft);
+    border-style: dashed;
+    border-color: var(--brass-soft);
+}
+
+.contact--add:hover .contact__avatar {
+    border-color: var(--brass);
+    color: var(--brass);
+}
+
+.contact__name {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+}
+
+/* Transfer inputs: bottom border only, brass on focus. */
+.transfer-form .input {
+    padding: 8px 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--ink-soft);
+    border-radius: 0;
+}
+
+.transfer-form .input:focus {
+    border-bottom-color: var(--brass);
+}
+
+/* ---------- Spending chart ---------- */
+.spending-card__legend {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s1);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.spending-card__legend-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--brass);
+    border-radius: 1px;
+}
+
+.chart {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: var(--s2);
+    height: 250px;
+    padding-top: 22px; /* room for the value label above a full-height bar */
+}
+
+/* 4 faint horizontal gridlines in --rule behind the bars. */
+.chart__grid {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 22px;    /* = .chart padding-top (plot top) */
+    bottom: 24px; /* day-label band (16px line + 8px row gap) */
+    background-image: linear-gradient(to bottom, var(--rule) 0, var(--rule) 1px, transparent 1px);
+    background-size: 100% 25%;
+    background-repeat: repeat-y;
+    pointer-events: none;
+}
+
+/* 1fr plot / auto day label */
+.chart__col {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    justify-items: center;
+    row-gap: 8px;
+}
+
+/* Value label + bar stacked, so labels sit directly above each bar. */
+.chart__stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    min-height: 0;
+}
+
+.chart__value {
+    font-size: 0.64rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+}
+
+/* Thin bars with square tops. */
+.chart__bar {
+    width: 28px;
+    min-height: 4px;
+    background: var(--forest);
+    transition: background-color var(--transition);
+}
+
+.chart__col:hover .chart__bar {
+    background: var(--forest-deep);
+}
+
+.chart__col--peak .chart__bar {
+    background: var(--brass);
+}
+
+.chart__day {
+    font-size: 0.66rem;
+    line-height: 16px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.chart__col--peak .chart__day {
+    color: var(--brass);
+    font-weight: 600;
+}
+
+/* ---------- Login page (two-panel: forest aside + paper form) ---------- */
+.login {
+    padding: var(--s5) 0 var(--s6);
+}
+
+.login__inner {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+    /* This box doubles as .container (24px inline gutter); cancel the
+       padding so both panels sit flush against the border on every side. */
+    padding-inline: 0;
+}
+
+.login__panel {
+    padding: var(--s5) var(--s4);
+}
+
+.login__panel--brand {
+    color: var(--paper);
+    background: var(--forest);
+}
+
+.login__panel--form {
+    background: var(--paper);
+}
+
+/* Small spaced-capital label; brass-soft on forest, brass on paper. */
+.login__label {
+    margin: 0 0 var(--s2);
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--brass-soft);
+}
+
+.login__label--brass {
+    color: var(--brass);
+}
+
+.login__title {
+    margin: 0 0 var(--s2);
+    font-family: var(--font-heading);
+    font-size: 2.1rem;
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--paper);
+}
+
+.login__lede {
+    margin: 0 0 var(--s4);
+    max-width: 36ch;
+    font-size: 0.95rem;
+    color: rgba(247, 244, 236, 0.72);
+}
+
+/* Trust points: hairline rules, thin-line icons. */
+.login__trust {
+    display: grid;
+    gap: var(--s2);
+}
+
+.login__trust li {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    padding-top: var(--s2);
+    font-size: 0.9rem;
+    color: rgba(247, 244, 236, 0.85);
+    border-top: 1px solid rgba(247, 244, 236, 0.15);
+}
+
+.login__trust li:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.login__trust-icon {
+    flex: none;
+    color: var(--brass-soft);
+}
+
+.login__subtitle {
+    margin: 0 0 var(--s3);
+    font-size: 1.5rem;
+}
+
+/* Demo notice banner (no backend wired up yet). */
+.login__notice {
+    margin: 0 0 var(--s3);
+    padding: 12px var(--s2);
+    font-size: 0.85rem;
+    color: var(--forest);
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-left: 2px solid var(--brass);
+    border-radius: var(--radius-sm);
+}
+
+/* Bottom-border-only inputs, brass focus line. */
+.input-line {
+    display: flex;
+    align-items: center;
+    gap: var(--s1);
+    border-bottom: 1px solid var(--rule);
+    transition: border-color var(--transition);
+}
+
+.input-line:focus-within {
+    border-bottom-color: var(--brass);
+}
+
+.input-line .input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+}
+
+.input-line.is-invalid {
+    border-bottom-color: var(--negative);
+}
+
+/* Visible error text under the field. */
+.field__error {
+    margin: var(--s1) 0 0;
+    font-size: 0.78rem;
+    color: var(--negative);
+}
+
+/* Show/hide password toggle: thin-line eye icon. */
+.password-toggle {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    color: var(--ink-soft);
+    transition: color var(--transition);
+}
+
+.password-toggle:hover {
+    color: var(--brass);
+}
+
+/* Slashed-eye icon only while the password is visible. */
+.password-toggle__icon--off {
+    display: none;
+}
+
+.password-toggle.is-visible .password-toggle__icon {
+    display: none;
+}
+
+.password-toggle.is-visible .password-toggle__icon--off {
+    display: block;
+}
+
+/* Remember me + forgot password row. */
+.login-form__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s2);
+    margin-bottom: var(--s3);
+}
+
+.checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s1);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+}
+
+.checkbox input {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    accent-color: var(--forest);
+}
+
+.login-form__link {
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--brass);
+    padding-bottom: 1px;
+}
+
+.login-form__link:hover {
+    color: var(--ink);
+}
+
+/* Hairline divider before the register prompt. */
+.login-form__divider {
+    border-top: 1px solid var(--rule);
+    margin: var(--s3) 0 var(--s2);
+}
+
+.login-form__foot {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    text-align: center;
+}
+
+.login-form__foot a {
+    font-weight: 500;
+    color: var(--forest);
+    border-bottom: 1px solid var(--brass);
+    padding-bottom: 1px;
+}
+
+.login-form__foot a:hover {
+    color: var(--ink);
+}
+
+/* ---------- Register page (reuses the .login two-panel shell) ---------- */
+
+/* Numbered 3-step list: brass numerals, hairline separators. */
+.register-steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+}
+
+.register-steps li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s2);
+    padding: var(--s2) 0;
+    font-size: 0.95rem;
+    color: rgba(247, 244, 236, 0.85);
+    border-top: 1px solid rgba(247, 244, 236, 0.15);
+}
+
+.register-steps li:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.register-steps li:last-child {
+    padding-bottom: 0;
+}
+
+.register-steps__num {
+    flex: none;
+    min-width: 1.4em;
+    font-size: var(--size-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    font-variant-numeric: tabular-nums;
+    color: var(--brass-soft);
+}
+
+/* First name + last name share a row (stacked on small screens). */
+.register-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s2);
+}
+
+/* Selects keep the bottom-border-only treatment with a hairline chevron. */
+.input-line select.input {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 22px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2355625A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+/* Password strength: thin rule + weak/fair/strong label. */
+.strength {
+    margin-top: var(--s1);
+}
+
+.strength__track {
+    height: 3px;
+    background: var(--rule);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.strength__fill {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--rule);
+    transition: width var(--transition), background-color var(--transition);
+}
+
+.strength__label {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s1);
+    margin: 6px 0 0;
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.strength__level {
+    font-weight: 600;
+}
+
+.strength.is-weak .strength__fill {
+    background: var(--negative);
+}
+
+.strength.is-weak .strength__level {
+    color: var(--negative);
+}
+
+.strength.is-fair .strength__fill {
+    background: var(--brass);
+}
+
+.strength.is-fair .strength__level {
+    color: var(--brass);
+}
+
+.strength.is-strong .strength__fill {
+    background: var(--positive);
+}
+
+.strength.is-strong .strength__level {
+    color: var(--positive);
+}
+
+/* Terms links keep the brass hairline treatment; invalid checkbox goes red. */
+.register-form__terms a {
+    font-weight: 500;
+    color: var(--forest);
+    border-bottom: 1px solid var(--brass);
+    padding-bottom: 1px;
+}
+
+.register-form__terms a:hover {
+    color: var(--ink);
+}
+
+.checkbox.is-invalid {
+    color: var(--negative);
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+    color: rgba(247, 244, 236, 0.8);
+    background: var(--forest-deep);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: var(--s4);
+    padding: var(--s5) 0 var(--s4);
+}
+
+.footer-logo {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: var(--s2);
+}
+
+.footer-logo .logo-mark {
+    color: var(--paper);
+    font-size: 1.3rem;
+}
+
+.footer-logo .logo-text {
+    color: rgba(247, 244, 236, 0.72);
+}
+
+.footer-tagline {
+    max-width: 34ch;
+    font-size: 0.95rem;
+    color: rgba(247, 244, 236, 0.7);
+}
+
+.footer-heading {
+    margin: 0 0 var(--s2);
+    font-family: var(--font-body);
+    font-size: var(--size-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--brass-soft);
+}
+
+.footer-links {
+    display: grid;
+    gap: var(--s1);
+}
+
+.footer-links a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(247, 244, 236, 0.8);
+    border-bottom: 1px solid transparent;
+}
+
+.footer-links a:hover {
+    color: var(--brass-soft);
+    border-bottom-color: rgba(216, 199, 154, 0.5);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(247, 244, 236, 0.15);
+}
+
+.footer-bottom__inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s2);
+    padding: var(--s3) var(--s3);
+    font-size: 0.8rem;
+    color: rgba(247, 244, 236, 0.65);
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+.footer-disclaimer {
+    letter-spacing: 0.02em;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+    /* Summary band stacks: the bank card drops below the balance. */
+    .summary__inner {
+        grid-template-columns: 1fr;
+        gap: var(--s4);
+    }
+
+    /* Body becomes one column. */
+    .dashboard {
+        grid-template-columns: 1fr;
+        gap: var(--s4);
+    }
+
+    .block--activity,
+    .block--spending,
+    .block--transfer,
+    .block--gift {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    /* Reading order in the single column. */
+    .block--activity { order: 1; }
+    .block--transfer  { order: 2; }
+    .block--spending  { order: 3; }
+    .block--gift      { order: 4; }
+}
+
+@media (max-width: 900px) {
+    /* Login panels stack: forest panel first (shorter), full-width form. */
+    .login {
+        padding: var(--s4) 0 var(--s5);
+    }
+
+    .login__inner {
+        grid-template-columns: 1fr;
+    }
+
+    .login__panel {
+        padding: var(--s4) var(--s3);
+    }
+
+    .login__panel--brand {
+        padding-block: var(--s3);
+    }
+
+    .login__title {
+        font-size: 1.7rem;
+    }
+
+    .login__lede {
+        margin-bottom: var(--s3);
+    }
+
+    /* Mobile masthead row: logo left, hamburger + bell/avatar right. */
+    .nav-toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        width: 44px;
+        height: 44px;
+    }
+
+    .header-actions {
+        flex: 1 1 auto;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: var(--s3);
+    }
+
+    .header-search {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .header-search input {
+        width: 100%;
+    }
+
+    .header-bell,
+    .header-avatar {
+        flex: 0 0 auto;
+    }
+
+    /* Mobile dropdown: full-width panel directly under the masthead. */
+    .primary-nav {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        width: 100%;
+        z-index: 1000;
+        background: var(--paper);
+        border-top: 1px solid var(--rule);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        margin: 0;
+        padding: 0;
+    }
+
+    .primary-nav.is-open {
+        display: block;
+    }
+
+    .nav-list {
+        display: block;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-item {
+        border-top: 1px solid var(--rule);
+        margin-left: -2px;
+    }
+
+    .nav-item:first-child {
+        border-top: 0;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 16px 24px;
+        font-size: 0.95rem;
+        color: var(--ink);
+        border-bottom: 0;
+        text-decoration: none;
+    }
+
+    .nav-link:hover {
+        color: var(--ink);
+    }
+
+    .nav-link.active {
+        color: var(--forest-deep);
+        background: var(--paper-2);
+        border-left: 2px solid var(--brass);
+        margin-left: -2px;
+    }
+}
+
+@media (max-width: 640px) {
+    .header-search {
+        display: none;
+    }
+
+    .gift-redeem {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* Register: first/last name stack on small screens. */
+    .register-form__row {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-bottom__inner {
+        flex-direction: column;
+        gap: var(--s1);
+    }
+}
+
+@media (max-width: 600px) {
+    /* Action buttons become a 2x2 grid. */
+    .summary__actions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .action-btn {
+        justify-content: center;
+        padding: 12px 10px;
+        font-size: 0.66rem;
+    }
+
+    .summary__greeting {
+        font-size: 1.9rem;
+    }
+
+    /* Balance shrinks for narrow screens. */
+    .summary__amount {
+        font-size: 2.5rem;
+    }
+
+    /* Keep bank-card content comfortable at narrow widths. */
+    .bank-card {
+        gap: var(--s2);
+        padding: var(--s2);
+    }
+
+    .bank-card__tier,
+    .bank-card__brand {
+        font-size: 1rem;
+    }
+
+    .bank-card__chip {
+        width: 36px;
+        height: 26px;
+    }
+
+    .bank-card__number {
+        font-size: 0.95rem;
+        letter-spacing: 0.18em;
+    }
+
+    .block__title {
+        font-size: 1.3rem;
+    }
+
+    /* Spending chart stays readable. */
+    .chart {
+        height: 200px;
+        gap: var(--s1);
+    }
+
+    .chart__value {
+        font-size: 0.6rem;
+        letter-spacing: 0;
+    }
+
+    .chart__bar {
+        width: 22px;
+    }
+
+    /* Top strip: keep text on one line, smaller font under 600px. */
+    .top-strip {
+        white-space: nowrap;
+    }
+
+    .top-strip__note {
+        font-size: 0.62rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .top-strip__links .top-strip__help {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .gift-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.is-hidden,
+[hidden] { display: none !important; }
+
+
+

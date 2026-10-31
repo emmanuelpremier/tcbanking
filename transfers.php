@@ -184,6 +184,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="field">
                     <label class="field__label" for="amount">Amount</label>
                     <div class="input-line">
+                        <span class="input-prefix">₦</span>
                         <input
                             class="input"
                             type="text"
@@ -191,7 +192,7 @@ require __DIR__ . '/includes/header.php';
                             name="amount"
                             inputmode="decimal"
                             autocomplete="off"
-                            placeholder="₦0.00"
+                            placeholder="0.00"
                         >
                     </div>
                     <p class="field__error" id="amount-error" hidden>Amount must be greater than 0 and within your available balance.</p>
