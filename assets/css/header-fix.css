@@ -1,0 +1,220 @@
+/* ==========================================================================
+   HEADER FIX - T&C Banking
+   Loaded AFTER style.css (see includes/header.php). This file owns:
+   - the sticky header (top strip scrolls away, masthead stays pinned)
+   - the mobile menu (HIDDEN by default, shown only when .is-open)
+   - the hamburger / X icon
+   - the header search field
+   ========================================================================== */
+
+:root {
+    --strip-h: 34px;
+}
+
+@media (max-width: 600px) {
+    :root {
+        --strip-h: 30px;
+    }
+}
+
+/* ---------- One sticky wrapper ----------
+   The wrapper holds the top strip + the masthead. It sticks with a negative
+   offset equal to the strip height, so the strip scrolls away and the
+   masthead stays pinned at the very top. */
+body .site-top {
+    position: sticky;
+    top: calc(var(--strip-h) * -1);
+    z-index: 1000;
+    background: var(--paper, #F7F4EC);
+}
+
+body .top-strip {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    height: var(--strip-h);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+body .top-strip__inner {
+    width: 100%;
+    padding-block: 0;
+    flex-wrap: nowrap;
+}
+
+body .top-strip__note,
+body .top-strip__links,
+body .top-strip__links a {
+    white-space: nowrap;
+}
+
+/* The masthead is NOT sticky by itself any more (the wrapper does it).
+   It needs a solid background so page content never shows through. */
+body .site-header {
+    position: relative;
+    background: var(--paper, #F7F4EC);
+}
+
+body .masthead {
+    position: relative;
+    top: auto;
+    z-index: 1;
+    background-color: var(--paper, #F7F4EC);
+    border-bottom: 1px solid var(--rule, #D9D2C0);
+}
+
+html {
+    scroll-padding-top: 80px;
+}
+
+/* ---------- Header search field: bottom border only ---------- */
+body .header-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 4px;
+    border: 0;
+    border-bottom: 1px solid var(--rule, #D9D2C0);
+    background: transparent;
+}
+
+body .header-search:focus-within {
+    border-bottom-color: var(--brass, #A88B4A);
+}
+
+body .header-search input[type="search"] {
+    width: 150px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: var(--ink, #14201A);
+}
+
+body .header-search input[type="search"]::placeholder {
+    color: var(--ink-soft, #55625A);
+}
+
+body .header-search input[type="search"]::-webkit-search-decoration,
+body .header-search input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* ---------- Hamburger button: hidden on desktop ---------- */
+body .nav-toggle {
+    display: none;
+}
+
+/* ---------- Mobile (900px and below) ---------- */
+@media (max-width: 900px) {
+
+    /* Hamburger: three bars, becomes a clean X when open. */
+    body .nav-toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        width: 44px;
+        height: 44px;
+        order: 3;
+        color: var(--ink, #14201A);
+    }
+
+    body .nav-toggle .nav-toggle-bar {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: currentColor;
+    }
+
+    body .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    body .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    body .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* The dropdown panel: HIDDEN by default, full width under the masthead. */
+    body .primary-nav {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        width: 100%;
+        z-index: 5;
+        margin: 0;
+        padding: 0;
+        background: var(--paper, #F7F4EC);
+        border-top: 1px solid var(--rule, #D9D2C0);
+        border-bottom: 1px solid var(--rule, #D9D2C0);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+    }
+
+    body .primary-nav.is-open {
+        display: block;
+    }
+
+    body .primary-nav .nav-list {
+        display: block;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    body .primary-nav .nav-item {
+        margin: 0;
+        border-top: 1px solid var(--rule, #D9D2C0);
+    }
+
+    body .primary-nav .nav-item:first-child {
+        border-top: 0;
+    }
+
+    body .primary-nav .nav-link {
+        display: block;
+        padding: 16px 24px;
+        font-size: 0.95rem;
+        color: var(--ink, #14201A);
+        border-bottom: 0;
+        border-left: 2px solid transparent;
+        margin-left: 0;
+    }
+
+    body .primary-nav .nav-link.active {
+        background: var(--paper-2, #EFEADD);
+        border-left-color: var(--brass, #A88B4A);
+        color: var(--forest-deep, #0A2A20);
+    }
+}
+
+/* Search is hidden on small phones to keep the header on one row. */
+@media (max-width: 640px) {
+    body .header-search {
+        display: none;
+    }
+}
+
+/* Top strip: hide "Help" on very narrow phones so everything stays on one line. */
+@media (max-width: 400px) {
+    body .top-strip__links li:first-child {
+        display: none;
+    }
+}

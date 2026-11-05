@@ -54,7 +54,7 @@
     let selectedChip = null;
     let transferType = 'self'; // 'self' or 'third'
     let availableBalance = 0;
-    let currency = 'â‚¦';
+    let currency = '₦';
 
     // ---------- Init ----------
     document.addEventListener('DOMContentLoaded', function () {
@@ -75,7 +75,7 @@
         fromAccountSel.addEventListener('change', function () {
             const opt = this.options[this.selectedIndex];
             availableBalance = parseFloat(opt.getAttribute('data-available').replace(/,/g, '')) || 0;
-            currency = opt.getAttribute('data-currency') || 'â‚¦';
+            currency = opt.getAttribute('data-currency') || '₦';
             updateAmountDisplay();
             updateBalanceLine();
         });
@@ -119,6 +119,10 @@
                     bank: this.dataset.bank || '',
                     initials: this.dataset.initials || ''
                 };
+
+; {
+;
+                };
                 recipientInput.value = selectedContact.name;
                 acctNumInput.value = selectedContact.account;
                 validateStep1();
@@ -144,14 +148,14 @@
         if (!amountInput) return;
 
         amountInput.addEventListener('input', function () {
-            // Strip any non-numeric except dot
-            formatAmountInput(this);
-            // Prevent multiple dots
+            
+            formatAmountInput(this); {
+            
 
 
-                this.value = formatAmount(parseAmount(this.value));
+
             }
-            this.value = formatAmount(parseAmount(this.value));
+
 
             chips.forEach(c => c.classList.remove('is-active'));
             selectedChip = null;
@@ -306,10 +310,10 @@
         if (reviewToName) reviewToName.textContent = recipientInput.value.trim();
         if (reviewToAcc) reviewToAcc.textContent = acctNumInput.value;
         if (reviewBank) {
-            reviewBank.textContent = transferType === 'third' ? (document.getElementById('bank').value || 'â€”') : 'â€”';
+            reviewBank.textContent = transferType === 'third' ? (document.getElementById('bank').value || '—') : '—';
         }
         if (reviewAmount) reviewAmount.textContent = formatAmount(amount);
-        if (reviewNarration) reviewNarration.textContent = narrationInput.value.trim() || 'â€”';
+        if (reviewNarration) reviewNarration.textContent = narrationInput.value.trim() || '—';
     }
 
     // ---------- Edit button ----------

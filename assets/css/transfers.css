@@ -1,7 +1,8 @@
 /* ==========================================================================
-   TRANSFERS PAGE - T&C Banking
-   Classic private-bank design system.
+   TRANSFERS PAGE - T&C Banking  (complete stylesheet)
    Ivory / forest / brass, Poppins, hairline rules, 2-4px corners.
+   Everything is scoped under .transfers-header / .transfers-body so it never
+   changes other pages. Underline-style inputs, no boxes.
    ========================================================================== */
 
 :root {
@@ -11,18 +12,14 @@
     --tr-soft:    var(--ink-soft, #55625A);
     --tr-forest:  var(--forest,  #0F3D2E);
     --tr-brass:   var(--brass,   #A88B4A);
-    --tr-brass-soft: var(--brass-soft, #D8C79A);
     --tr-rule:    var(--rule,    #D9D2C0);
     --tr-pos:     var(--positive, #2F6B4F);
     --tr-neg:     var(--negative, #8C3B32);
-    --tr-radius:  var(--radius, 3px);
-    --tr-radius-sm: var(--radius-sm, 2px);
 }
 
 /* ---------- Page header ---------- */
-
 .transfers-header {
-    padding: 56px 0 24px;
+    padding: 56px 0 8px;
     background: var(--tr-paper);
 }
 
@@ -51,107 +48,97 @@
 }
 
 /* ---------- Progress indicator ---------- */
-
-.progress {
-    margin: 32px 0;
+.transfers-header .progress {
+    margin: 32px 0 8px;
 }
 
-.progress__list {
+.transfers-header .progress__list {
     display: flex;
     align-items: center;
-    gap: var(--s2);
-    padding-left: 0;
+    flex-wrap: wrap;
+    gap: 8px 0;
     margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-.progress__step {
+.transfers-header .progress__step {
     display: flex;
     align-items: center;
-    gap: 8px;
-    position: relative;
+    gap: 10px;
 }
 
-.progress__step--active .progress__circle {
-    background: var(--tr-forest);
-    color: var(--tr-paper);
+.transfers-header .progress__line {
+    display: block;
+    width: 48px;
+    height: 1px;
+    margin: 0 14px;
+    background: var(--tr-rule);
 }
 
-.progress__circle {
+.transfers-header .progress__circle {
+    display: grid;
+    place-items: center;
     width: 28px;
     height: 28px;
     border: 1px solid var(--tr-forest);
     border-radius: 50%;
-    display: grid;
-    place-items: center;
     font-size: 0.78rem;
     font-weight: 600;
     color: var(--tr-forest);
-    z-index: 2;
+    background: transparent;
 }
 
-.progress__label {
-    font-size: 0.78rem;
+.transfers-header .progress__label {
+    font-size: 0.82rem;
     font-weight: 500;
     color: var(--tr-soft);
     white-space: nowrap;
 }
 
-.progress__step--active .progress__label {
+.transfers-header .progress__step--active .progress__circle,
+.transfers-header .progress__step--done .progress__circle {
+    background: var(--tr-forest);
+    color: var(--tr-paper);
+}
+
+.transfers-header .progress__step--active .progress__label {
     color: var(--tr-ink);
 }
 
-.progress__line {
-    flex: 1;
-    height: 1px;
-    background: var(--tr-rule);
-    margin: 0 var(--s1);
-    position: relative;
-    z-index: 1;
-}
-
-.progress__step--active ~ li .progress__line {
-    background: var(--tr-rule);
-}
-
 /* ---------- Body layout ---------- */
-
 .transfers-body {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 40px;
-    margin-bottom: 64px;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 64px;
+    align-items: start;
+    padding-block: 32px 96px;
 }
 
-.transfers-form-col { min-width: 0; }
-.transfers-panel-col { min-width: 0; }
-
-/* ---------- Form & steps ---------- */
+.transfers-form-col,
+.transfers-panel-col {
+    min-width: 0;
+}
 
 .transfers-form {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
+    display: block;
 }
 
-.step { display: none; }
-.step--active { display: block; }
-
-.step__title {
-    margin: 0 0 24px;
-    font-size: 1.25rem;
+.transfers-body .step__title {
+    margin: 0 0 28px;
+    font-size: 1.3rem;
     font-weight: 500;
     color: var(--tr-ink);
 }
 
-/* ---------- Field ---------- */
-
-.field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+/* ---------- Fields: underline style ---------- */
+.transfers-body .field {
+    margin-bottom: 28px;
 }
 
-.field__label {
+.transfers-body .field__label {
+    display: block;
+    margin-bottom: 4px;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.1em;
@@ -159,38 +146,49 @@
     color: var(--tr-soft);
 }
 
-.field__error {
-    font-size: 0.78rem;
-    color: var(--tr-neg);
-    margin-top: 4px;
-}
-
-/* ---------- Input line & input ---------- */
-
-.input-line {
+.transfers-body .input-line {
     position: relative;
     display: flex;
     align-items: center;
-    border: 1px solid var(--tr-rule);
-    border-radius: var(--tr-radius-sm);
-    background: #fff;
-    transition: border-color var(--transition);
-}
-.input {
-    flex: 1;
-    width: 100%;
-    padding: 12px 14px;
-    padding-left: 28px;
-    font-size: 0.95rem;
-    color: var(--tr-ink);
-    background: transparent;
     border: 0;
-    outline: none;
+    border-bottom: 1px solid var(--tr-soft);
+    border-radius: 0;
+    background: transparent;
 }
 
-.input-prefix {
-    position: absolute;
-    left: 14px;
+.transfers-body .input-line:focus-within {
+    border-bottom-color: var(--tr-brass);
+}
+
+.transfers-body .input-line.is-invalid {
+    border-bottom-color: var(--tr-neg);
+}
+
+.transfers-body .input-line .input {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    padding: 10px 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--tr-ink);
+}
+
+.transfers-body .input-line .input::placeholder {
+    color: var(--tr-soft);
+    opacity: 0.7;
+}
+
+/* The naira sign is a normal flex item in front of the input: no overlap. */
+.transfers-body .input-prefix {
+    position: static;
+    flex: none;
+    padding: 10px 8px 10px 0;
     font-size: 0.95rem;
     font-weight: 500;
     color: var(--tr-soft);
@@ -198,3 +196,309 @@
     user-select: none;
 }
 
+.transfers-body .input-prefix + .input {
+    padding-left: 0;
+}
+
+/* Selects: custom arrow, same underline look. */
+.transfers-body select.input {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 28px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2355625A' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+}
+
+.transfers-body .field__error {
+    margin: 6px 0 0;
+    font-size: 0.78rem;
+    color: var(--tr-neg);
+}
+
+.transfers-body .balance-line {
+    margin: 10px 0 0;
+    font-size: 0.85rem;
+    color: var(--tr-soft);
+}
+
+.transfers-body #balance-value {
+    font-weight: 500;
+    color: var(--tr-ink);
+}
+
+/* ---------- Quick amount chips ---------- */
+.transfers-body .amount-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.transfers-body .chip {
+    padding: 8px 14px;
+    border: 1px solid var(--tr-rule);
+    border-radius: 2px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--tr-ink);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.transfers-body .chip:hover,
+.transfers-body .chip.is-active {
+    border-color: var(--tr-forest);
+    background: var(--tr-paper-2);
+}
+
+/* ---------- Contacts row (reuses the global contact styles) ---------- */
+.transfers-body .contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* ---------- Review table ---------- */
+.transfers-body .ledger {
+    width: 100%;
+    margin: 0 0 24px;
+    border-collapse: collapse;
+}
+
+.transfers-body .review-row td {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--tr-rule);
+    vertical-align: top;
+}
+
+.transfers-body .review-label {
+    width: 40%;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tr-soft);
+}
+
+.transfers-body .review-value {
+    text-align: right;
+    font-weight: 500;
+    color: var(--tr-ink);
+}
+
+#edit-btn {
+    margin-bottom: 32px;
+}
+
+/* ---------- Step 3: done ---------- */
+.transfers-body .done-panel {
+    padding: 32px 0 8px;
+    text-align: center;
+}
+
+.transfers-body .check-icon {
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 24px;
+    border: 1px solid var(--tr-pos);
+    border-radius: 50%;
+    color: var(--tr-pos);
+}
+
+.transfers-body .check-icon svg {
+    width: 36px;
+    height: 36px;
+}
+
+.transfers-body .done-title {
+    margin: 0 0 12px;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--tr-ink);
+}
+
+.transfers-body .done-ref {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--tr-soft);
+}
+
+.transfers-body .ref-number {
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--tr-ink);
+}
+
+.transfers-body .done-amount {
+    margin: 24px 0 4px;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--tr-ink);
+}
+
+.transfers-body .done-recipient {
+    margin: 0;
+    color: var(--tr-soft);
+}
+
+.transfers-body .done-actions {
+    display: grid;
+    gap: 12px;
+    max-width: 360px;
+    margin: 32px auto 0;
+}
+
+/* ---------- Right column ---------- */
+.transfers-panel--sticky {
+    position: sticky;
+    top: 104px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.transfers-body .limit-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 4px;
+}
+
+.transfers-body .limit-label {
+    font-size: 0.85rem;
+    color: var(--tr-soft);
+}
+
+.transfers-body .limit-value {
+    font-weight: 500;
+    color: var(--tr-ink);
+}
+
+.transfers-body .limit-bar {
+    position: relative;
+    height: 4px;
+    margin: 12px 0;
+}
+
+.transfers-body .limit-bar__track {
+    position: absolute;
+    inset: 0;
+    background: var(--tr-rule);
+}
+
+.transfers-body .limit-bar__fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 17%;
+    background: var(--tr-brass);
+}
+
+.transfers-body .limit-text {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--tr-soft);
+}
+
+.transfers-body .recipients {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.transfers-body .recipient-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--tr-rule);
+}
+
+.transfers-body .recipient-item:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.transfers-body .recipient-avatar {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--tr-rule);
+    border-radius: 50%;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--tr-forest);
+}
+
+.transfers-body .recipient-name {
+    font-size: 0.92rem;
+    color: var(--tr-ink);
+}
+
+.transfers-body .note {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+}
+
+.transfers-body .note__rule {
+    flex: none;
+    width: 2px;
+    background: var(--tr-brass);
+}
+
+.transfers-body .note__text {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--tr-soft);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+    .transfers-body {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 40px;
+        padding-block: 24px 64px;
+    }
+
+    .transfers-panel--sticky {
+        position: static;
+    }
+}
+
+@media (max-width: 600px) {
+    .transfers-header {
+        padding-top: 40px;
+    }
+
+    .transfers-header .progress__line {
+        width: 20px;
+        margin: 0 8px;
+    }
+
+    .transfers-header .progress__label {
+        font-size: 0.74rem;
+    }
+
+    .transfers-body .contacts {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 8px;
+    }
+
+    .transfers-body .done-actions {
+        max-width: none;
+    }
+}

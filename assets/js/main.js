@@ -52,42 +52,6 @@
             }
         });
 
-        // Track panel scroll so that scrolling inside the panel never
-        // triggers a close; only the body/page scrolling matters.
-        var panelScrollY = 0;
-        var isInsidePanel = false;
-
-        nav.addEventListener('scroll', function () {
-            panelScrollY = nav.scrollTop;
-            isInsidePanel = true;
-        });
-
-        window.addEventListener('scroll', function () {
-            if (nav.classList.contains('is-open')) {
-                // Scrolling inside the panel: still update the stored
-                // position so the 10px threshold is measured against
-                // the panel's own scroll, not the window.
-                if (isInsidePanel) {
-                    panelScrollY = nav.scrollTop;
-                    isInsidePanel = false;
-                } else {
-                    if (Math.abs(window.scrollY - scrollY) > 10) {
-                        closeMenu();
-                    }
-                }
-            }
-        });
-
-        // Close the menu when the user clicks outside the nav panel.
-        document.addEventListener('click', function (event) {
-            var target = event.target;
-            var isToggle = target.closest('.nav-toggle');
-            var isNav = target.closest('#primary-nav');
-            if (!isToggle && !isNav && nav.classList.contains('is-open')) {
-                closeMenu();
-            }
-        });
-
         // Close on Escape for keyboard accessibility.
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Escape') {
