@@ -8,9 +8,6 @@
 
     // ---------- DOM references ----------
     const form        = document.getElementById('transfers-form');
-    const step1       = document.getElementById('step-1');
-    const step2       = document.getElementById('step-2');
-    const step3       = document.getElementById('step-3');
     const continueBtn = document.getElementById('continue-btn');
     const editBtn     = document.getElementById('edit-btn');
     const confirmBtn  = document.getElementById('confirm-btn');
@@ -37,16 +34,16 @@
     const reviewAmount    = document.getElementById('review-amount');
     const reviewNarration = document.getElementById('review-narration');
 
-    const refNumberEl = document.getElementById('ref-number');
-    const doneAmountEl = document.getElementById('done-amount');
+    const refNumberEl     = document.getElementById('ref-number');
+    const doneAmountEl    = document.getElementById('done-amount');
     const doneRecipientEl = document.getElementById('done-recipient');
-    const balanceValueEl = document.getElementById('balance-value');
+    const balanceValueEl  = document.getElementById('balance-value');
 
     // Error containers
-    const acctNumError = document.getElementById('account-error');
+    const acctNumError   = document.getElementById('account-error');
     const recipientError = document.getElementById('recipient-error');
-    const amountError = document.getElementById('amount-error');
-    const pinError = document.getElementById('pin-error');
+    const amountError    = document.getElementById('amount-error');
+    const pinError       = document.getElementById('pin-error');
 
     // ---------- State ----------
     let currentStep = 1;
@@ -74,9 +71,8 @@
         if (!fromAccountSel) return;
         fromAccountSel.addEventListener('change', function () {
             const opt = this.options[this.selectedIndex];
-            availableBalance = parseFloat(opt.getAttribute('data-available').replace(/,/g, '')) || 0;
+            availableBalance = parseFloat((opt.getAttribute('data-available') || '0').replace(/,/g, '')) || 0;
             currency = opt.getAttribute('data-currency') || '₦';
-            updateAmountDisplay();
             updateBalanceLine();
         });
         // Trigger change on first option to set initial balance
@@ -100,11 +96,7 @@
     function toggleBankField() {
         const bankField = document.getElementById('bank-field');
         if (!bankField) return;
-        if (transferType === 'third') {
-            bankField.style.display = 'block';
-        } else {
-            bankField.style.display = 'none';
-        }
+        bankField.style.display = (transferType === 'third') ? 'block' : 'none';
     }
 
     // ---------- Contacts ----------
@@ -118,10 +110,6 @@
                     account: this.dataset.account || '',
                     bank: this.dataset.bank || '',
                     initials: this.dataset.initials || ''
-                };
-
-; {
-;
                 };
                 recipientInput.value = selectedContact.name;
                 acctNumInput.value = selectedContact.account;
@@ -137,7 +125,8 @@
                 chips.forEach(c => c.classList.remove('is-active'));
                 this.classList.add('is-active');
                 selectedChip = this;
-                amountInput.value = formatAmount(parseAmount(this.dataset.amount));
+                // The field never contains the currency symbol
+                amountInput.value = formatPlain(parseAmount(this.dataset.amount));
                 validateStep1();
             });
         });
@@ -147,32 +136,37 @@
     function initAmountInput() {
         if (!amountInput) return;
 
+        // While typing: keep digits, one decimal point, thousand commas.
         amountInput.addEventListener('input', function () {
-            
-            formatAmountInput(this); {
-            
-
-
-
-            }
-
-
+            formatAmountInput(this);
             chips.forEach(c => c.classList.remove('is-active'));
             selectedChip = null;
             validateStep1();
-            updateAmountDisplay();
         });
 
-        amountInput.addEventListener('blur', function () {
-            updateAmountDisplay();
-        });
+        // On leaving the field: tidy to two decimals (50,000 -> 50,000.00)
+        amountInput.addEventListener('blur', updateAmountDisplay);
+    }
+
+    function formatAmountInput(input) {
+        // keep digits and one decimal point, max 2 decimals, add thousand commas
+        let v = input.value.replace(/[^\d.]/g, '');
+        const firstDot = v.indexOf('.');
+        if (firstDot !== -1) {
+            v = v.slice(0, firstDot + 1) + v.slice(firstDot + 1).replace(/\./g, '');
+        }
+        const parts = v.split('.');
+        const intPart = parts[0]
+            .replace(/^0+(?=\d)/, '')
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        input.value = parts.length > 1 ? intPart + '.' + parts[1].slice(0, 2) : intPart;
     }
 
     function updateAmountDisplay() {
         if (!amountInput) return;
         const raw = parseAmount(amountInput.value);
         if (raw > 0) {
-            amountInput.value = formatAmount(raw);
+            amountInput.value = formatPlain(raw);
         }
     }
 
@@ -181,15 +175,19 @@
         balanceValueEl.textContent = formatAmount(availableBalance);
     }
 
-    function formatAmount(num) {
-        return currency + num.toLocaleString(undefined, {
+    function formatPlain(num) {
+        return num.toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
     }
 
+    function formatAmount(num) {
+        return currency + formatPlain(num);
+    }
+
     function parseAmount(str) {
-        return parseFloat(String(str).replace(/,/g, '')) || 0;
+        return parseFloat(String(str).replace(/[^\d.]/g, '')) || 0;
     }
 
     // ---------- Step switching ----------
@@ -310,7 +308,8 @@
         if (reviewToName) reviewToName.textContent = recipientInput.value.trim();
         if (reviewToAcc) reviewToAcc.textContent = acctNumInput.value;
         if (reviewBank) {
-            reviewBank.textContent = transferType === 'third' ? (document.getElementById('bank').value || '—') : '—';
+            const bankEl = document.getElementById('bank');
+            reviewBank.textContent = transferType === 'third' ? ((bankEl && bankEl.value) || '—') : '—';
         }
         if (reviewAmount) reviewAmount.textContent = formatAmount(amount);
         if (reviewNarration) reviewNarration.textContent = narrationInput.value.trim() || '—';
@@ -357,7 +356,7 @@
 
             // Reset UI
             typeTabs.forEach(t => t.classList.remove('is-active'));
-            typeTabs[0].classList.add('is-active');
+            if (typeTabs[0]) typeTabs[0].classList.add('is-active');
             contacts.forEach(c => c.classList.remove('is-selected'));
             chips.forEach(c => c.classList.remove('is-active'));
             pinInput.value = '';
