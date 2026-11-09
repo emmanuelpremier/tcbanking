@@ -86,7 +86,7 @@ $navItems = [
                         <circle cx="11" cy="11" r="7"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    <input type="search" name="q" placeholder="Search transactions" aria-label="Search transactions">
+                    <input type="search" name="q" placeholder="Search" aria-label="Search transactions">
                 </form>
 
                 <button class="header-bell" type="button" aria-label="Notifications (1 unread)">
