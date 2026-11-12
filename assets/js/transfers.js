@@ -40,6 +40,8 @@
     const balanceValueEl  = document.getElementById('balance-value');
 
     // Error containers
+    const bankInput      = document.getElementById('bank');
+    const bankError      = document.getElementById('bank-error');
     const acctNumError   = document.getElementById('account-error');
     const recipientError = document.getElementById('recipient-error');
     const amountError    = document.getElementById('amount-error');
@@ -52,6 +54,8 @@
     let transferType = 'self'; // 'self' or 'third'
     let availableBalance = 0;
     let currency = '₦';
+    let attempted1 = false; // errors only show after the first Continue click
+    let attempted2 = false;
 
     // ---------- Init ----------
     document.addEventListener('DOMContentLoaded', function () {
@@ -96,7 +100,7 @@
     function toggleBankField() {
         const bankField = document.getElementById('bank-field');
         if (!bankField) return;
-        bankField.style.display = (transferType === 'third') ? 'block' : 'none';
+        bankField.hidden = (transferType !== 'third');
     }
 
     // ---------- Contacts ----------
@@ -217,13 +221,26 @@
     // ---------- Validation ----------
     function validateStep1() {
         let valid = true;
+        const show = attempted1;
 
-        // Account number validation (only for third-party)
+        // Bank (only for "another bank"): picked from the list or typed
+        if (transferType === 'third') {
+            if (bankInput && !bankInput.value.trim()) {
+                valid = false;
+                if (show) showError(bankError, 'Please choose a bank or type its name'); else hideError(bankError);
+            } else {
+                hideError(bankError);
+            }
+        } else {
+            hideError(bankError);
+        }
+
+        // Account number validation (only for "another bank")
         if (transferType === 'third') {
             const acctVal = acctNumInput.value.replace(/\D/g, '');
             if (acctVal.length !== 10) {
-                showError(acctNumError, 'Please enter a 10-digit account number');
                 valid = false;
+                if (show) showError(acctNumError, 'Please enter a 10-digit account number'); else hideError(acctNumError);
             } else {
                 hideError(acctNumError);
             }
@@ -233,8 +250,8 @@
 
         // Recipient name required
         if (!recipientInput.value.trim()) {
-            showError(recipientError, 'Recipient name is required');
             valid = false;
+            if (show) showError(recipientError, 'Recipient name is required'); else hideError(recipientError);
         } else {
             hideError(recipientError);
         }
@@ -242,59 +259,61 @@
         // Amount validation
         const amount = parseAmount(amountInput.value);
         if (amount <= 0) {
-            showError(amountError, 'Amount must be greater than 0');
             valid = false;
+            if (show) showError(amountError, 'Amount must be greater than 0'); else hideError(amountError);
         } else if (amount > availableBalance) {
-            showError(amountError, 'Amount exceeds available balance (' + formatAmount(availableBalance) + ')');
             valid = false;
+            if (show) showError(amountError, 'Amount exceeds available balance (' + formatAmount(availableBalance) + ')'); else hideError(amountError);
         } else {
             hideError(amountError);
         }
 
-        continueBtn.disabled = !valid;
         return valid;
     }
 
     function validateStep2() {
-        let valid = true;
         const pinVal = pinInput.value.replace(/\D/g, '');
+        const valid = pinVal.length === 4;
 
-        if (pinVal.length !== 4) {
+        if (!valid && attempted2) {
             showError(pinError, 'Please enter a 4-digit PIN');
-            valid = false;
         } else {
             hideError(pinError);
         }
-
-        confirmBtn.disabled = !valid;
         return valid;
     }
 
     function showError(el, msg) {
         if (!el) return;
         el.textContent = msg;
-        el.style.display = 'block';
+        el.hidden = false;
     }
 
     function hideError(el) {
         if (!el) return;
-        el.style.display = 'none';
+        el.hidden = true;
     }
 
     // ---------- Continue button ----------
     function initContinueButton() {
         if (!continueBtn) return;
         continueBtn.addEventListener('click', function () {
-            if (!validateStep1()) return;
+            attempted1 = true;
+            if (!validateStep1()) {
+                const firstErr = form.querySelector('.field__error:not([hidden])');
+                if (firstErr) firstErr.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                return;
+            }
 
             populateReview();
             showStep(2);
         });
 
         // Real-time validation on input
-        [acctNumInput, recipientInput, amountInput].forEach(function (el) {
+        [acctNumInput, recipientInput, amountInput, bankInput].forEach(function (el) {
             if (el) el.addEventListener('input', validateStep1);
         });
+        if (bankInput) bankInput.addEventListener('change', validateStep1);
     }
 
     // ---------- Populate review (step 2) ----------
@@ -307,12 +326,24 @@
         if (reviewType) reviewType.textContent = transferType === 'third' ? 'Third-party transfer' : 'Self transfer';
         if (reviewToName) reviewToName.textContent = recipientInput.value.trim();
         if (reviewToAcc) reviewToAcc.textContent = acctNumInput.value;
+        const isThird = transferType === 'third';
         if (reviewBank) {
-            const bankEl = document.getElementById('bank');
-            reviewBank.textContent = transferType === 'third' ? ((bankEl && bankEl.value) || '—') : '—';
+            reviewBank.textContent = isThird && bankInput ? (bankInput.value.trim() || '—') : '—';
         }
+        setRowHidden('review-bank-row', !isThird);
         if (reviewAmount) reviewAmount.textContent = formatAmount(amount);
-        if (reviewNarration) reviewNarration.textContent = narrationInput.value.trim() || '—';
+        const feeEl = document.getElementById('review-fee');
+        if (feeEl) feeEl.textContent = formatAmount(0);
+        const totalEl = document.getElementById('review-total');
+        if (totalEl) totalEl.textContent = formatAmount(amount);
+        const narration = narrationInput.value.trim();
+        if (reviewNarration) reviewNarration.textContent = narration || '—';
+        setRowHidden('review-narration-row', !narration);
+    }
+
+    function setRowHidden(id, hide) {
+        const row = document.getElementById(id);
+        if (row) row.hidden = hide;
     }
 
     // ---------- Edit button ----------
@@ -327,6 +358,7 @@
     function initConfirmButton() {
         if (!confirmBtn) return;
         confirmBtn.addEventListener('click', function () {
+            attempted2 = true;
             if (!validateStep2()) return;
 
             const ref = generateReference();
@@ -353,6 +385,8 @@
             selectedChip = null;
             transferType = 'self';
             currentStep = 1;
+            attempted1 = false;
+            attempted2 = false;
 
             // Reset UI
             typeTabs.forEach(t => t.classList.remove('is-active'));
@@ -364,6 +398,7 @@
             acctNumInput.value = '';
             recipientInput.value = '';
             amountInput.value = '';
+            if (bankInput) bankInput.value = '';
 
             toggleBankField();
             validateStep1();

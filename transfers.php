@@ -10,9 +10,11 @@ $pageTitle  = 'Transfers';
 $activePage = 'transfers';
 
 require_once __DIR__ . '/includes/data.php';
+require_once __DIR__ . '/includes/banks.php';
 require __DIR__ . '/includes/header.php';
 ?>
 <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/transfers.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/bank-picker.css">
 <!-- ============ Transfers header ============ -->
 <section class="transfers-header" aria-labelledby="transfers-heading">
     <div class="container">
@@ -132,18 +134,30 @@ require __DIR__ . '/includes/header.php';
                 <!-- Bank (shown only for "another bank") -->
                 <div class="field bank-field" id="bank-field" hidden>
                     <label class="field__label" for="bank">Bank</label>
-                    <div class="input-line">
-                        <select class="input" id="bank" name="bank">
-                            <option value="access">Access Bank</option>
-                            <option value="firstbank">FirstBank</option>
-                            <option value="gtbank">Guaranty Trust Bank</option>
-                            <option value="uba">United Bank for Africa</option>
-                            <option value="zenith">Zenith Bank</option>
-                            <option value="fidelity">Fidelity Bank</option>
-                            <option value="sterling">Sterling Bank</option>
-                            <option value="ecobank">Ecobank Nigeria</option>
-                        </select>
+                    <div class="bank-picker" id="bank-picker" data-banks="<?= htmlspecialchars(json_encode(get_banks(), JSON_UNESCAPED_UNICODE) ?: '[]', ENT_QUOTES, 'UTF-8') ?>">
+                        <div class="input-line bank-picker__line">
+                            <input
+                                class="input"
+                                type="text"
+                                id="bank"
+                                name="bank"
+                                role="combobox"
+                                aria-autocomplete="list"
+                                aria-expanded="false"
+                                aria-controls="bank-list"
+                                autocomplete="off"
+                                autocapitalize="words"
+                                spellcheck="false"
+                                placeholder="Search or type a bank name"
+                            >
+                            <button class="bank-picker__toggle" type="button" tabindex="-1" aria-label="Show all banks" aria-expanded="false" aria-controls="bank-list">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <ul class="bank-picker__list" id="bank-list" role="listbox" aria-label="Banks" hidden></ul>
+                        <p class="bank-picker__status" role="status" aria-live="polite"></p>
                     </div>
+                    <p class="field__error" id="bank-error" hidden>Please choose a bank or type its name.</p>
                 </div>
 
                 <!-- Account number -->
@@ -364,4 +378,5 @@ require __DIR__ . '/includes/header.php';
 </div>
 
 <script src="<?= BASE_URL ?>assets/js/transfers.js" defer></script>
+<script src="<?= BASE_URL ?>assets/js/bank-picker.js" defer></script>
 <?php require __DIR__ . '/includes/footer.php'; ?>
